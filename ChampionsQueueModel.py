@@ -1,6 +1,5 @@
 from keras.backend import binary_crossentropy
 from keras.layers import Dense, Dropout
-from keras.optimizer_v2.gradient_descent import SGD
 from keras.regularizers import l2
 
 import dataGenerator
@@ -41,14 +40,14 @@ def createModel():
 
 
 if __name__ == '__main__':
-    # numClicks = 40
+    numClicks = 40
     # if len(sys.argv) > 1:
     #     numClicks = np.int_(sys.argv[1])
-    # data = dataGenerator.generateData("https://championsqueue.gg/matches", numClicks)
-    # np.savetxt("champions_queue_data.csv", data, delimiter=",", fmt="%s")
+    data = dataGenerator.generateData("https://championsqueue.gg/matches", numClicks)
+    np.savetxt("champions_queue_data.csv", data, delimiter=",", fmt="%s")
+    print("done")
     data = np.genfromtxt('champions_queue_data.csv', delimiter=',', dtype='U')
     data = changeChampionNamesToNumbers(data)
-    # Here I could do a patch thing but I really cba rn
 
     model = createModel()
 
