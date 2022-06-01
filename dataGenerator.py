@@ -29,7 +29,8 @@ def getChampionsAndPatches(URL, numClicks):
 def getWebpage(URL, numClicks):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(executable_path='chromedriver.exe', options=chrome_options)
+    driver = webdriver.Chrome(
+        executable_path='chromedriver.exe', options=chrome_options)
     driver.get('{}?qty={}'.format(URL, 1346))
     time.sleep(2)
     button = driver.find_element(by=By.CLASS_NAME, value="block")
@@ -47,7 +48,8 @@ def getWebpage(URL, numClicks):
 def getWinLoss(URL, numClicks):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(executable_path='chromedriver.exe', options=chrome_options)
+    driver = webdriver.Chrome(
+        executable_path='chromedriver.exe', options=chrome_options)
     driver.get('{}?qty={}'.format(URL, 1346))
     time.sleep(2)
     button = driver.find_element(by=By.CLASS_NAME, value="block")
@@ -65,7 +67,8 @@ def getWinLoss(URL, numClicks):
         soup = BeautifulSoup(html, 'lxml')
         outcomes = soup.find_all('h3', class_='outcome svelte-pgplua')
         winLosses.append(outcomes[0].getText())
-        el = driver.find_element(by=By.XPATH, value="//div[@class=\'backdrop svelte-pgplua\']")
+        el = driver.find_element(
+            by=By.XPATH, value="//div[@class=\'backdrop svelte-pgplua\']")
         action = ActionChains(driver)
         action.move_to_element_with_offset(el, 100, 100)
         action.click()
