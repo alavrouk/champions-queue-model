@@ -2,31 +2,19 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
 import numpy as np
-import sys
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 
 
+# Scrapes from championsqueue.gg
+
 # Gets the latest 20(numClicks + 1) Matches
 # Then gets the champions in those games and patches
 # Champions is [Team 1, Team 2]
-def getChampionsAndPatches(URL, numClicks):
-    page_content = getWebpage(URL, numClicks)
-    champions = []
-    patches = []
-    for champ in page_content.find('ol', class_='list').find_all('img', class_='svelte-j5wrz'):
-        champions.append(champ['alt'])
-    for patch in page_content.find('ol', class_='list').find_all('span', class_='stat patch svelte-e4g8hu'):
-        patches.append(patch)
-    champions = np.asarray(champions)
-    champions = champions.reshape((champions.shape[0] // 10, 10))
-    patches = np.asarray(patches)
-    patches = patches.reshape((patches.shape[0], 1))
-    return champions, patches
 
-
-# Uses Selenium to get the HTML for the champsqueue website
-def getWebpage(URL, numClicks):
+def generateData(URL, numClicks, logger):
+    logger.info("Setting up webdriver")
+    d0 = time.perf_counter()
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
     driver = webdriver.Chrome(
@@ -38,25 +26,52 @@ def getWebpage(URL, numClicks):
         button.click()
         time.sleep(2)
     html = driver.page_source
-    driver.quit()
     page_content = BeautifulSoup(html, 'lxml')
-    return page_content
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
+
+    logger.info("Scraping champion info...")
+    d0 = time.perf_counter()
+    champions = getChampions(page_content)
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
+
+    logger.info("Scraping player info...")
+    d0 = time.perf_counter()
+    players = getPlayers(page_content)
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
+
+    logger.info("Scraping patch info...")
+    d0 = time.perf_counter()
+    patches = getPatches(page_content)
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
+
+    logger.info("Scraping winloss info...")
+    d0 = time.perf_counter()
+    winLosses = getWinLoss(driver)
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
+
+    driver.quit()
+
+    # This one is not its own fucntion because I want to add more data, once all data has been added ill make it its own function
+    logger.info("Formatting data...")
+    d0 = time.perf_counter()
+    patches = patches.reshape((patches.shape[0], 1))
+    winLosses = winLosses.reshape((winLosses.shape[0], 1))
+    playersAndChampions = np.ravel([players, champions], order="F").reshape(np.shape(players)[0],
+                                                                            np.shape(players)[1] + np.shape(players)[1])
+    data = np.append(patches, winLosses, 1)
+    data = np.append(data, playersAndChampions, 1)
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
+    return data
 
 
-# WinLoss on this website is really terrible, you have to actually click on the match
-# So I do that here
-def getWinLoss(URL, numClicks):
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(
-        executable_path='chromedriver.exe', options=chrome_options)
-    driver.get('{}?qty={}'.format(URL, 1346))
+def getWinLoss(driver):
     time.sleep(2)
-    button = driver.find_element(by=By.CLASS_NAME, value="block")
-    for i in range(numClicks):
-        button.click()
-        time.sleep(2)
-    time.sleep(5)
     matchList = driver.find_element(by=By.CLASS_NAME, value='list')
     matches = matchList.find_elements_by_tag_name("li")
     winLosses = []
@@ -78,27 +93,36 @@ def getWinLoss(URL, numClicks):
     return winLosses
 
 
-# Format the data however you please here
-def formatData(champions, patches, winLosses):
+def getChampions(page_content):
+    champions = []
+    for champ in page_content.find('ol', class_='list').find_all('img', class_='svelte-j5wrz'):
+        champions.append(champ['alt'])
+    champions = np.asarray(champions)
+    champions = champions.reshape((champions.shape[0] // 10, 10))
+    return champions
+
+
+def getPlayers(page_content):
+    players = []
+    for player in page_content.find('ol', class_='list').find_all('span', class_='player-name svelte-e4g8hu'):
+        players.append(player)
+    # Remove player team from their name (so team swaps do not affect data)
+    players = np.asarray(players)
+    for i in range(len(players)):
+        spliced = players[i][0].split(' ')
+        if len(spliced) > 1:
+            del spliced[0]
+            s = " "
+            s = s.join(spliced)
+            players[i][0] = s
+    players = players.reshape((players.shape[0] // 10, 10))
+    return players
+
+
+def getPatches(page_content):
+    patches = []
+    for patch in page_content.find('ol', class_='list').find_all('span', class_='stat patch svelte-e4g8hu'):
+        patches.append(patch)
+    patches = np.asarray(patches)
     patches = patches.reshape((patches.shape[0], 1))
-    winLosses = winLosses.reshape((winLosses.shape[0], 1))
-    data = np.append(patches, winLosses, 1)
-    data = np.append(data, champions, 1)
-    return data
-
-
-# Puts it all together
-def generateData(URL, numClicks):
-    champions, patches = getChampionsAndPatches(URL, numClicks)
-    winLosses = getWinLoss(URL, numClicks)
-    data = formatData(champions, patches, winLosses)
-    return data
-
-
-# Main function, here I run generateData and turn it into a csv for later
-# if __name__ == '__main__':
-#     numClicks = 15
-#     if len(sys.argv) > 1:
-#         numClicks = np.int_(sys.argv[1])
-#     data = generateData("https://championsqueue.gg/matches", numClicks)
-#     np.savetxt("champions_queue_data.csv", data, delimiter=",", fmt="%s")
+    return patches
