@@ -35,7 +35,7 @@ def createLogger():
 if __name__ == '__main__':
     # Pass this guy into everything (or make global variable I have no idea how python works)
     logger = createLogger()
-    numClicks = 3
+    numClicks = 25
     # if len(sys.argv) > 1:
     #     numClicks = np.int_(sys.argv[1])
 
