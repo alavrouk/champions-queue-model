@@ -38,10 +38,10 @@ if __name__ == '__main__':
     numClicks = 3
     # if len(sys.argv) > 1:
     #     numClicks = np.int_(sys.argv[1])
-    logger.info("Starting data generation...")
-    data = dataGenerator.generateData(
-        "https://championsqueue.gg/matches", numClicks, logger)
-    logger.info("Data generation complete!")
 
-    np.savetxt("champions_queue_data.csv", data, delimiter=",", fmt="%s")
+    # TODO: Need to add some sort of things with args or something to generate data or not, like an if statement
+
+    logger.info("Starting data generation...")
+    dataGenerator.generateData(numClicks, logger)
+    logger.info("Data generation complete!")
     data = np.genfromtxt('champions_queue_data.csv', delimiter=',', dtype='U')
