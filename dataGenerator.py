@@ -13,6 +13,14 @@ from selenium.webdriver.common.by import By
 # Champions is [Team 1, Team 2]
 
 def generateData(numClicks, logger):
+    """
+    The main function for data generation. Combines all other functions that  scrape all sorts of data
+
+    :param numClicks: Each click indicates 20 extra data points. So the amount of data points you will have will be
+    20 * (numclicks + 1)
+    :param logger: Just the logger passed in from the main method
+    :return: Nothing, just saves the data generated into csv files
+    """
     logger.info("Setting up webdriver")
     d0 = time.perf_counter()
     chrome_options = webdriver.ChromeOptions()
@@ -66,8 +74,7 @@ def generateData(numClicks, logger):
     d0 = time.perf_counter()
     patches = patches.reshape((patches.shape[0], 1))
     winLosses = winLosses.reshape((winLosses.shape[0], 1))
-    playersAndChampions = np.ravel([players, champions], order="F").reshape(np.shape(players)[0],
-                                                                            np.shape(players)[1] + np.shape(players)[1])
+    playersAndChampions = np.append(players, champions, axis=1)
     data = np.append(patches, winLosses, 1)
     data = np.append(data, playersAndChampions, 1)
     d1 = time.perf_counter()
@@ -77,6 +84,12 @@ def generateData(numClicks, logger):
     np.savetxt("champions_queue_data.csv", data, delimiter=",", fmt="%s")
 
 def getPlayerWinrate(logger):
+    """
+    This method gets the player winrate. It requires a separate webdriver because the player winrate is on a different
+    page. Returns 2 columns, one with players and one with their winrate
+    :param logger: The same logger from earlier
+    :return: Does not return anything, just saves to the player_winrates csv
+    """
     logger.info("Setting up webdriver for player winrate and number of games")
     d0 = time.perf_counter()
     chrome_options = webdriver.ChromeOptions()
@@ -116,6 +129,14 @@ def getPlayerWinrate(logger):
 
 
 def getWinLoss(driver):
+    """
+    Gets the winner. The nature of the website that is being scraped makes it difficult to actually get this,
+    as in you have to click on the match to get the result. So this ends up taking a while unfotunately. Returns a
+    column of wins and losses, and the rows coincides with the players/champions.
+
+    :param driver: The webdriver from earlier, no need to make a new one
+    :return: Returns a [n x 1] np array with wins and losses
+    """
     time.sleep(2)
     matchList = driver.find_element(by=By.CLASS_NAME, value='list')
     matches = matchList.find_elements_by_tag_name("li")
@@ -138,6 +159,12 @@ def getWinLoss(driver):
 
 
 def getChampions(page_content):
+    """
+    Gets the champions in the match, something to look into is determining roles for those champions
+
+    :param page_content: The xml that was generated earlier by the webdriver
+    :return: Returns a [n x 10] np array with all of the champions
+    """
     champions = []
     for champ in page_content.find('ol', class_='list').find_all('img', class_='svelte-j5wrz'):
         champions.append(champ['alt'])
@@ -147,6 +174,12 @@ def getChampions(page_content):
 
 
 def getPlayers(page_content):
+    """
+    Gets the players in the match
+
+    :param page_content: The xml that was generated earlier by the webdriver
+    :return: Returns a [n x 10] np array with all of the champions
+    """
     players = []
     for player in page_content.find('ol', class_='list').find_all('span', class_='player-name svelte-e4g8hu'):
         players.append(player)
@@ -164,6 +197,12 @@ def getPlayers(page_content):
 
 
 def getPatches(page_content):
+    """
+    Gets the patches the matches were played on
+
+    :param page_content: The xml that was generated earlier by the webdriver
+    :return: Returns a [n x 1] array with the patches for each match
+    """
     patches = []
     for patch in page_content.find('ol', class_='list').find_all('span', class_='stat patch svelte-e4g8hu'):
         patches.append(patch)
