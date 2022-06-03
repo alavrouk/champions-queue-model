@@ -3,6 +3,7 @@ import dataGenerator
 import numpy as np
 from CustomFormatter import CustomFormatter
 import datetime
+import RandomForest
 
 
 def createLogger():
@@ -53,6 +54,7 @@ if __name__ == '__main__':
     # TODO: Need to add some sort of things with args or something to generate data or not, like an if statement
 
     logger.info("Starting data generation...")
-    dataGenerator.generateData(numClicks, logger)
+    # dataGenerator.generateData(numClicks, logger)
     logger.info("Data generation complete!")
     data = np.genfromtxt('champions_queue_data.csv', delimiter=',', dtype='U')
+    RandomForest.getRandomForest(data)
