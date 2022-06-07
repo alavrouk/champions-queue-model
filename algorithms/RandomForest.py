@@ -1,7 +1,5 @@
-import h2o  # do we need the entire package?
+import h2o  # do we need the entire package? # Probably not lmao
 from h2o.estimators import H2ORandomForestEstimator
-import numpy as np
-import GlobalVariables
 
 
 def getRandomForest(data):
@@ -19,7 +17,7 @@ def getRandomForest(data):
     #           "Team1Champ1", "Team1Champ2", "Team1Champ3", "Team1Champ4", "Team1Champ5",
     #           "Team2Champ1", "Team2Champ2", "Team2Champ3", "Team2Champ4", "Team2Champ5"]
     # dataCopy = np.vstack([labels, data])
-    dataCopy = h2o.upload_file("champions_queue_data.csv")
+    dataCopy = h2o.upload_file("../data/champions_queue_data.csv")
     dataCopy["outcome"] = dataCopy["outcome"].asfactor()
     predictors = ["Team1Champ1", "Team1Champ2", "Team1Champ3", "Team1Champ4", "Team1Champ5",
                   "Team2Champ1", "Team2Champ2", "Team2Champ3", "Team2Champ4", "Team2Champ5"]

@@ -25,7 +25,7 @@ def generateData(numClicks, logger):
     d0 = time.perf_counter()
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(executable_path='chromedriver.exe', options=chrome_options)
+    driver = webdriver.Chrome(executable_path='driver/chromedriver.exe', options=chrome_options)
     driver.get('{}?qty={}'.format("https://championsqueue.gg/matches", 1346))
     time.sleep(2)
     button = driver.find_element(by=By.CLASS_NAME, value="block")
@@ -69,6 +69,12 @@ def generateData(numClicks, logger):
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
+    logger.info("Scraping champion winrate info...")
+    d0 = time.perf_counter()
+    getChampionWinrate(logger)
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
+
     # This one is not its own fucntion because I want to add more data, once all data has been added ill make it its own function
     logger.info("Formatting data...")
     d0 = time.perf_counter()
@@ -81,7 +87,37 @@ def generateData(numClicks, logger):
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
     logger.info("Saved data to champions_queue_data.csv")
-    np.savetxt("champions_queue_data.csv", data, delimiter=",", fmt="%s")
+    np.savetxt("data/champions_queue_data.csv", data, delimiter=",", fmt="%s")
+
+
+def getChampionWinrate(logger):
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    driver = webdriver.Chrome(executable_path='driver/chromedriver.exe', options=chrome_options)
+    driver.get('{}?qty={}'.format("https://championsqueue.gg/champions", 1346))
+    time.sleep(2)
+    html = driver.page_source
+    page_content = BeautifulSoup(html, 'lxml')
+
+    champions = []
+    for champion in page_content.find_all('h4', class_='name svelte-1l4ilrf'):
+        champions.append(champion)
+    champions = np.asarray(champions)
+    champions.reshape((champions.size, 1))
+
+    winrates = []
+    for winrate in page_content.find_all('span', class_='stat winrate svelte-1l4ilrf'):
+        winrates.append(winrate)
+    winrates = np.asarray(winrates)
+    winrates.reshape((winrates.size, 1))
+
+    driver.quit()
+
+    data = np.concatenate((champions, winrates), 1)
+
+    logger.info("Saved to champion_winrate.csv")
+    np.savetxt("data/champion_winrate.csv", data, delimiter=",", fmt="%s")
+
 
 def getPlayerWinrate(logger):
     """
@@ -90,17 +126,13 @@ def getPlayerWinrate(logger):
     :param logger: The same logger from earlier
     :return: Does not return anything, just saves to the player_winrates csv
     """
-    logger.info("Setting up webdriver for player winrate and number of games")
-    d0 = time.perf_counter()
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(executable_path='chromedriver.exe', options=chrome_options)
+    driver = webdriver.Chrome(executable_path='driver/chromedriver.exe', options=chrome_options)
     driver.get('{}?qty={}'.format("https://championsqueue.gg/players", 1346))
     time.sleep(2)
     html = driver.page_source
     page_content = BeautifulSoup(html, 'lxml')
-    d1 = time.perf_counter()
-    logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
     players = []
     for player in page_content.find_all('p', class_='name svelte-1jnscn1'):
@@ -125,7 +157,8 @@ def getPlayerWinrate(logger):
 
     data = np.concatenate((players, winrates), 1)
 
-    np.savetxt("player_winrate.csv", data, delimiter=",", fmt="%s")
+    logger.info("Saved to player_winrate.csv")
+    np.savetxt("data/player_winrate.csv", data, delimiter=",", fmt="%s")
 
 
 def getWinLoss(driver):

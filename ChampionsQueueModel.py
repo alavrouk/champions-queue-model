@@ -1,9 +1,8 @@
 import logging
 import dataGenerator
 import numpy as np
-from CustomFormatter import CustomFormatter
-import datetime
-import RandomForest
+from util.CustomFormatter import CustomFormatter
+from algorithms import RandomForest
 
 
 def createLogger():
@@ -25,15 +24,15 @@ def createLogger():
     stdout_handler.setFormatter(CustomFormatter(fmt))
 
     # Create file handler for logging to a file (logs all five levels)
-    today = datetime.date.today()
-    file_handler = logging.FileHandler(
-        'my_app_{}.log'.format(today.strftime('%Y_%m_%d')))
-    file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(logging.Formatter(fmt))
+    # today = datetime.date.today()
+    # file_handler = logging.FileHandler(
+    #     'my_app_{}.log'.format(today.strftime('%Y_%m_%d')))
+    # file_handler.setLevel(logging.DEBUG)
+    # file_handler.setFormatter(logging.Formatter(fmt))
 
     # Add both handlers to the logger
     logger.addHandler(stdout_handler)
-    logger.addHandler(file_handler)
+    # logger.addHandler(file_handler)
 
     return logger
 
@@ -54,7 +53,7 @@ if __name__ == '__main__':
     # TODO: Need to add some sort of things with args or something to generate data or not, like an if statement
 
     logger.info("Starting data generation...")
-    # dataGenerator.generateData(numClicks, logger)
+    #dataGenerator.generateData(numClicks, logger)
     logger.info("Data generation complete!")
-    data = np.genfromtxt('champions_queue_data.csv', delimiter=',', dtype='U')
+    data = np.genfromtxt('data/champions_queue_data.csv', delimiter=',', dtype='U')
     RandomForest.getRandomForest(data)
