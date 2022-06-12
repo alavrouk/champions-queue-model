@@ -3,6 +3,7 @@ import dataGenerator
 import numpy as np
 import util.DataTransformations
 from util.CustomFormatter import CustomFormatter
+from algorithms.SVM import runSVM
 from algorithms import RandomForest
 
 
@@ -58,4 +59,4 @@ if __name__ == '__main__':
     logger.info("Data generation complete!")
     data = np.genfromtxt('data/champions_queue_data.csv', delimiter=',', dtype='U')
     #RandomForest.getRandomForest(data)
-    finalkNNData = util.DataTransformations.kNNTransform(data)
+    runSVM(data, logger)

@@ -1,3 +1,11 @@
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import numpy as np
+from scipy.stats import gaussian_kde as kde
+from matplotlib.colors import Normalize
+from matplotlib import cm
+from sklearn import svm
+
 """
 This file will contain transformations for each algorithm. All of these transformations will take in
 the original "data" array, which for now is of format
@@ -61,7 +69,7 @@ def kNNTransform(data):
         for j in range(11, 16):
             sum2 = sum2 + float(kNNData[i, j])
         sum2 = sum2 / 5
-        team1.append(sum1 + sum2)
+        team1.append((sum1 + sum2) / 2)
     team1 = np.asarray(team1)
     team1 = team1.reshape((team1.size, 1))
     finalKNNData = np.concatenate((finalKNNData, team1), 1)
@@ -77,11 +85,12 @@ def kNNTransform(data):
         for j in range(16, 21):
             sum2 = sum2 + float(kNNData[i, j])
         sum2 = sum2 / 5
-        team2.append(sum1 + sum2)
+        team2.append((sum1 + sum2) / 2)
     team2 = np.asarray(team2)
     team2 = team2.reshape((team2.size, 1))
     finalKNNData = np.concatenate((finalKNNData, team2), 1)
 
     # Finally convert to an array of doubles and return
     finalKNNData = finalKNNData.astype(np.double)
+
     return finalKNNData
