@@ -1,6 +1,7 @@
 import logging
 import dataGenerator
 import numpy as np
+import util.DataTransformations
 from util.CustomFormatter import CustomFormatter
 from algorithms import RandomForest
 
@@ -56,4 +57,5 @@ if __name__ == '__main__':
     #dataGenerator.generateData(numClicks, logger)
     logger.info("Data generation complete!")
     data = np.genfromtxt('data/champions_queue_data.csv', delimiter=',', dtype='U')
-    RandomForest.getRandomForest(data)
+    #RandomForest.getRandomForest(data)
+    finalkNNData = util.DataTransformations.kNNTransform(data)

@@ -4,6 +4,7 @@ import time
 import numpy as np
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
+import re
 
 
 # Scrapes from championsqueue.gg
@@ -37,6 +38,18 @@ def generateData(numClicks, logger):
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
+    logger.info("Scraping champion winrate info...")
+    d0 = time.perf_counter()
+    getChampionWinrate(logger)
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
+
+    logger.info("Scraping player winrate info...")
+    d0 = time.perf_counter()
+    getPlayerWinrate(logger)
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
+
     logger.info("Scraping champion info...")
     d0 = time.perf_counter()
     champions = getChampions(page_content)
@@ -62,18 +75,6 @@ def generateData(numClicks, logger):
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
     driver.quit()
-
-    logger.info("Scraping player winrate info...")
-    d0 = time.perf_counter()
-    getPlayerWinrate(logger)
-    d1 = time.perf_counter()
-    logger.info(f"Done in {d1 - d0:0.4f} seconds")
-
-    logger.info("Scraping champion winrate info...")
-    d0 = time.perf_counter()
-    getChampionWinrate(logger)
-    d1 = time.perf_counter()
-    logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
     # This one is not its own fucntion because I want to add more data, once all data has been added ill make it its own function
     logger.info("Formatting data...")
@@ -102,8 +103,17 @@ def getChampionWinrate(logger):
     champions = []
     for champion in page_content.find_all('h4', class_='name svelte-1l4ilrf'):
         champions.append(champion)
+    # The following is a really terrible fix, but it works. Numpy is just really weird
+    # w/ string dtype lol
     champions = np.asarray(champions)
-    champions.reshape((champions.size, 1))
+    champions = champions.reshape((champions.size, 1))
+    champions = np.char.upper(champions)
+    np.savetxt("data/champion_winrate.csv", champions, delimiter=",", fmt="%s")
+    champions = np.genfromtxt('data/champion_winrate.csv', delimiter=',', dtype='U')
+    champions = champions.reshape((champions.size, 1))
+    regex = re.compile('[^a-zA-Z]')
+    for i in range(champions.size):
+        champions[i, 0] = regex.sub('', champions[i, 0])
 
     winrates = []
     for winrate in page_content.find_all('span', class_='stat winrate svelte-1l4ilrf'):
@@ -202,6 +212,14 @@ def getChampions(page_content):
     for champ in page_content.find('ol', class_='list').find_all('img', class_='svelte-j5wrz'):
         champions.append(champ['alt'])
     champions = np.asarray(champions)
+    champions.reshape((champions.size, 1))
+    champions = np.char.upper(champions)
+    regex = re.compile('[^a-zA-Z]')
+    for i in range(champions.size):
+        champions[i] = regex.sub('', champions[i])
+        # here lie the edge cases because god hates me
+        if champions[i] == "MONKEYKING":
+            champions[i] = "WUKONG"
     champions = champions.reshape((champions.shape[0] // 10, 10))
     return champions
 
