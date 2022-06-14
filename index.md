@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+<!-- ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/alavrouk/LoL-data/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
@@ -34,4 +34,26 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out. -->
+
+# League of Legends - Predicting Match Outcomes with Machine Learning
+
+## _Anton Lavrouk, Georgia Tech '24_
+## _Ethan Jiang, Vanderbilt University '24_
+
+## **Overview**
+Using only pre-match data, this project uses machine learning to try and predict the outcome of a League of Legends Champion's Queue match. etc. etc.
+
+### League of Legends & Champion's Queue
+
+### Data Collection & Usage
+
+## **Algorithms**
+
+### Random Forest
+
+### Neural Network
+
+### Support Vector Machine (SVM)
+
+butthole!
