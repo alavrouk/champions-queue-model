@@ -7,6 +7,7 @@ from sklearn import svm
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 
+
 def runSVM(data, logger):
     """
     Utilises a support vector machine classifier to create a decision boundary for determining win loss
@@ -28,10 +29,13 @@ def runSVM(data, logger):
     X = np.concatenate((x, y), axis=1)
     c = np.asarray(SVMData[:, 0])
     # Now I split the data into training and testing sets
-    training_data, testing_data = train_test_split(SVMData, test_size=0.2, random_state=23)
-    Xtrain = np.asarray(training_data[:, 1:3]).reshape((training_data.shape[0], 2))
+    training_data, testing_data = train_test_split(
+        SVMData, test_size=0.2, random_state=23)
+    Xtrain = np.asarray(training_data[:, 1:3]).reshape(
+        (training_data.shape[0], 2))
     ctrain = np.asarray(training_data[:, 0])
-    Xtest = np.asarray(testing_data[:, 1:3]).reshape((testing_data.shape[0], 2))
+    Xtest = np.asarray(testing_data[:, 1:3]).reshape(
+        (testing_data.shape[0], 2))
     ctest = np.asarray(testing_data[:, 0])
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
@@ -66,7 +70,8 @@ def runSVM(data, logger):
     # create a mesh to plot in
     x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
     y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
-    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                         np.arange(y_min, y_max, h))
     # Plot the decision boundary. For that, we will assign a color to each
     # point in the mesh [x_min, m_max]x[y_min, y_max].
     Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])

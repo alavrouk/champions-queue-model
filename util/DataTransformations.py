@@ -34,14 +34,16 @@ def kNNTransform(data):
     # First I will get rid of the patch
     kNNData = np.delete(data, 0, 1)
     # Now I will replace the champions with the specified champion winrate
-    championWinrates = genfromtxt('data/champion_winrate.csv', delimiter=',', dtype='U')
+    championWinrates = genfromtxt(
+        'data/champion_winrate.csv', delimiter=',', dtype='U')
     for i in range(kNNData.shape[0]):
         for j in range(11, 21):
             index = np.where(championWinrates == kNNData[i, j])
             kNNData[i, j] = championWinrates[index[0][0], 1]
             kNNData[i, j] = kNNData[i, j].replace('%', '')
     # Now I will replace the players with the specified player winrate
-    playerWinrates = genfromtxt('data/player_winrate.csv', delimiter=',', dtype='U')
+    playerWinrates = genfromtxt(
+        'data/player_winrate.csv', delimiter=',', dtype='U')
     for i in range(kNNData.shape[0]):
         for j in range(1, 11):
             index = np.where(playerWinrates == kNNData[i, j])
