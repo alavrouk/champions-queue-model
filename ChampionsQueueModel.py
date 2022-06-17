@@ -5,6 +5,7 @@ import util.DataTransformations
 from util.CustomFormatter import CustomFormatter
 from algorithms.SVM import runSVM
 from algorithms import RandomForest
+from algorithms.NeuralNet import runNeuralNetwork
 
 
 def createLogger():
@@ -48,7 +49,7 @@ if __name__ == '__main__':
     """
     # Pass this guy into everything (or make global variable I have no idea how python works)
     logger = createLogger()
-    numClicks = 25
+    numClicks = 40
     # if len(sys.argv) > 1:
     #     numClicks = np.int_(sys.argv[1])
 
@@ -59,4 +60,5 @@ if __name__ == '__main__':
     logger.info("Data generation complete!")
     data = np.genfromtxt('data/champions_queue_data.csv', delimiter=',', dtype='U')
     #RandomForest.getRandomForest(data)
-    runSVM(data, logger)
+    #runSVM(data, logger)
+    runNeuralNetwork(data, logger)

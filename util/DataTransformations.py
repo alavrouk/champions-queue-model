@@ -1,3 +1,5 @@
+import time
+
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
@@ -94,3 +96,42 @@ def kNNTransform(data):
     finalKNNData = finalKNNData.astype(np.double)
 
     return finalKNNData
+
+
+def neuralNetTransform(data, logger):
+
+    logger.info("Building Neural Network Data set...")
+    d0 = time.perf_counter()
+
+    # First I will get rid of the patch
+    neuralNetData = np.delete(data, 0, 1)
+
+    # Now I will replace the champions with the specified champion winrate
+    championWinrates = genfromtxt('data/champion_winrate.csv', delimiter=',', dtype='U')
+    for i in range(neuralNetData.shape[0]):
+        for j in range(11, 21):
+            index = np.where(championWinrates == neuralNetData[i, j])
+            neuralNetData[i, j] = championWinrates[index[0][0], 1]
+            neuralNetData[i, j] = neuralNetData[i, j].replace('%', '')
+
+    # Now I will replace the players with the specified player winrate
+    playerWinrates = genfromtxt('data/player_winrate.csv', delimiter=',', dtype='U')
+    for i in range(neuralNetData.shape[0]):
+        for j in range(1, 11):
+            index = np.where(playerWinrates == neuralNetData[i, j])
+            neuralNetData[i, j] = playerWinrates[index[0][0], 1]
+            neuralNetData[i, j] = neuralNetData[i, j].replace('%', '')
+
+    # First column will be result, with defeat being 1 and victory 0
+    for i in range(neuralNetData.shape[0]):
+        if neuralNetData[i, 0] == "Defeat":
+            neuralNetData[i, 0] = 0
+        else:
+            neuralNetData[i, 0] = 1
+
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
+    neuralNetData = neuralNetData.astype(np.double)
+
+
+    return neuralNetData
