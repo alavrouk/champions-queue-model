@@ -2,10 +2,10 @@ import time
 
 from keras import Sequential
 from keras.layers import Dense
-from tensorflow import keras
 import tensorflow as tf
 
 from util.DataTransformations import neuralNetTransform
+
 
 def runNeuralNetwork(data, logger):
 
