@@ -2,7 +2,7 @@ import time
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
-from util.DataTransformations import kNNTransform
+from util.DataTransformations import clusteringTransform
 from sklearn import svm
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
@@ -22,7 +22,7 @@ def runSVM(data, logger):
     logger.info("Splitting data into training and validation set...")
     d0 = time.perf_counter()
     # Using kNNData here transform here as they are the same
-    SVMData = kNNTransform(data)
+    SVMData = clusteringTransform(data)
     # First I want all of the data, so that I can end up plotting it
     x = np.asarray(SVMData[:, 1]).reshape((SVMData.shape[0], 1))
     y = np.asarray(SVMData[:, 2]).reshape((SVMData.shape[0], 1))

@@ -2,7 +2,7 @@ import h2o  # do we need the entire package? # Probably not lmao
 from h2o.estimators import H2ORandomForestEstimator
 
 
-def getRandomForest(data):
+def runRandomForest(data):
     """
     :param data:
     :return forest:

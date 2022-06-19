@@ -49,7 +49,7 @@ if __name__ == '__main__':
     """
     # Pass this guy into everything (or make global variable I have no idea how python works)
     logger = createLogger()
-    numClicks = 40
+    numClicks = 60
     # if len(sys.argv) > 1:
     #     numClicks = np.int_(sys.argv[1])
 

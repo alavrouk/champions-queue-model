@@ -20,7 +20,7 @@ import numpy as np
 from numpy import genfromtxt
 
 
-def kNNTransform(data):
+def clusteringTransform(data):
     """
     Output: [ Outcome, Avg_playerWR_t1 + Avg_champWR_t1, Avg_playerWR_t2 + Avg_champWR_t2]
     In theory this could lend itself to k nearest neighbors, this would follow the theory that the higher
