@@ -38,17 +38,23 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 # League of Legends - Predicting Match Outcomes with Machine Learning
 
-## _Anton Lavrouk, Georgia Tech '24_
-## _Ethan Jiang, Vanderbilt University '24_
+## _Anton Lavrouk (Georgia Tech '24)_
+## _Ethan Jiang (Vanderbilt University '24)_
 
-## **Overview**
-Using only pre-match data, this project uses machine learning to try and predict the outcome of a League of Legends Champion's Queue match. etc. etc.
+## **OVERVIEW**
+Using only pre-match data, this project uses machine learning to try and predict the outcome of League of Legends Champion's Queue matches. 
 
-### League of Legends & Champion's Queue
+etc. etc.
+
+### A Quick Summary - League of Legends Champion's Queue
+Champion's Queue intends to offer top NA & LATAM players a competitive environment closer to those found in KR and Chinese servers by
+1. limiting player pool to pro and select semi-pro players and
+2. lowering game ping.
 
 ### Data Collection & Usage
+Champion's Queue is currently in **Summer Split 1** (as of today, 18 June 2022). Since League of Legends underwent a [significant rebalancing](https://www.leagueoflegends.com/en-us/news/game-updates/patch-12-10-notes/) right before the start of this split, our models are <ins>trained exclusively on matches from this split</ins>.
 
-## **Algorithms**
+## **ALGORITHMS**
 
 ### Random Forest
 
@@ -56,4 +62,10 @@ Using only pre-match data, this project uses machine learning to try and predict
 
 ### Support Vector Machine (SVM)
 
-butthole!
+### Clustering
+
+- _K-Means_
+- _Gaussian Mixture Models_
+- _K-Nearest Neighbors_
+
+### Linear Regression
