@@ -6,6 +6,7 @@ import tensorflow as tf
 
 from util.DataTransformations import neuralNetTransform
 
+
 def runNeuralNetwork(data, logger):
     """
     Builds a neural network and evaluates it on the data provided in util.neuralNetTransform
