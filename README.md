@@ -1,5 +1,5 @@
 # LoL-data
 
-## Ethan Jiang, Anton Lavrouk, Mao Zedong
+## Ethan Jiang, Anton Lavrouk
 
-cheese
+overfit moment
