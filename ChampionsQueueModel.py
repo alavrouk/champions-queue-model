@@ -59,6 +59,6 @@ if __name__ == '__main__':
     #dataGenerator.generateData(numClicks, logger)
     logger.info("Data generation complete!")
     data = np.genfromtxt('data/champions_queue_data.csv', delimiter=',', dtype='U')
-    #RandomForest.runRandomForest(data, logger)
+    RandomForest.runRandomForest(data, logger)
     #runSVM(data, logger)
     #runNeuralNetwork(data, logger)

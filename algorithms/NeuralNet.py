@@ -49,7 +49,7 @@ def runNeuralNetwork(data, logger):
     model.compile(optimizer=Kevin,
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
-    #logger.info(model.summary())
+    model.summary()
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
@@ -59,10 +59,7 @@ def runNeuralNetwork(data, logger):
     test_loss, test_acc = model.evaluate(Xtest, Ytest)
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
-
-    logger.info("All Neural Network operations complete")
-
-   # This is to debug, see predictions on individual datapoints
+    # This is to debug, see predictions on individual datapoints
     Ypreds = model.predict(Xtest)
     for i in range(Xtest.shape[0]):
         print("Predicted: ", Ypreds[i])
@@ -70,3 +67,7 @@ def runNeuralNetwork(data, logger):
         print("--------------------------------------------------")
     print("test_loss:", test_loss)
     print("test_acc:", test_acc)
+
+    logger.info("All Neural Network operations complete")
+
+
