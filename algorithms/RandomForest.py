@@ -1,36 +1,36 @@
-import h2o  # do we need the entire package? # Probably not lmao
-from h2o.estimators import H2ORandomForestEstimator
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import metrics
+import seaborn as sn
+import matplotlib.pyplot as plt
+
+from util.DataTransformations import clusteringTransform
 
 
-def runRandomForest(data):
+def runRandomForest(data, logger):
     """
     :param data:
     :return forest:
     """
-    h2o.init()
-    print("Starting Random Forest...")
-    # Create a random forest classifier
-    forest = H2ORandomForestEstimator(ntrees=100)
 
-    # create factors
-    # labels = ["patch", "outcome",
-    #           "Team1Champ1", "Team1Champ2", "Team1Champ3", "Team1Champ4", "Team1Champ5",
-    #           "Team2Champ1", "Team2Champ2", "Team2Champ3", "Team2Champ4", "Team2Champ5"]
-    # dataCopy = np.vstack([labels, data])
-    dataCopy = h2o.upload_file("../data/champions_queue_data.csv")
-    dataCopy["outcome"] = dataCopy["outcome"].asfactor()
-    predictors = ["Team1Champ1", "Team1Champ2", "Team1Champ3", "Team1Champ4", "Team1Champ5",
-                  "Team2Champ1", "Team2Champ2", "Team2Champ3", "Team2Champ4", "Team2Champ5"]
-    response = "outcome"
+    rfData = clusteringTransform(data)
+    print(rfData)
 
-    # Split data into training and test sets
-    train, valid = dataCopy.split_frame(ratios=[.8], seed=69420)
+    rfData = pd.DataFrame({'team1': rfData[:, 1], 'team2': rfData[:, 2], 'result': rfData[:, 0]})
+    print(rfData)
 
-    # Train the model on the training data
-    forest.train(x=predictors, y=response, training_frame=train, validation_frame=valid)
+    X = rfData[['team1', 'team2']]
+    y = rfData['result']
 
-    # Evaluate on the test data
-    perf = forest.model_performance()
-    print(perf)
-    # Return the random forest
-    return forest
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
+
+    rf = RandomForestClassifier(n_estimators=200)
+    rf.fit(X_train, y_train)
+    y_pred = rf.predict(X_test)
+
+    confusion_matrix = pd.crosstab(y_test, y_pred, rownames=['Actual'], colnames=['Predicted'])
+    sn.heatmap(confusion_matrix, annot=True)
+
+    print('Accuracy: ', metrics.accuracy_score(y_test, y_pred))
+    plt.show()
