@@ -5,6 +5,7 @@ import util.DataTransformations
 from util.CustomFormatter import CustomFormatter
 from algorithms.SVM import runSVM
 from algorithms import RandomForest
+from algorithms.KMeans import runKMeans
 from algorithms.NeuralNet import runNeuralNetwork
 
 
@@ -58,8 +59,8 @@ if __name__ == '__main__':
     logger.info("Starting data generation...")
     #dataGenerator.generateData(numClicks, logger)
     logger.info("Data generation complete!")
-    data = np.genfromtxt('data/champions_queue_data.csv',
-                         delimiter=',', dtype='U')
-    RandomForest.runRandomForest(data, logger)
+    data = np.genfromtxt('data/champions_queue_data.csv', delimiter=',', dtype='U')
+    runKMeans(data, logger)
+    #RandomForest.runRandomForest(data, logger)
     #runSVM(data, logger)
     #runNeuralNetwork(data, logger)
