@@ -46,7 +46,7 @@ if __name__ == '__main__':
     The main function. The way we see this project being formatted is just to be able to plug and play into the 
     main function. So whichever model you want to try, just write it into the main function. The models are each their 
     own separate class.
-    
+
     """
     # Pass this guy into everything (or make global variable I have no idea how python works)
     logger = createLogger()

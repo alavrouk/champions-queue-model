@@ -20,9 +20,11 @@ def runRandomForest(data, logger):
     """
     logger.info("Starting Random Forest operations...")
 
-    logger.info("Creating dataframe and splitting data into training and validation set...")
+    logger.info(
+        "Creating dataframe and splitting data into training and validation set...")
     d0 = time.perf_counter()
     rfData = neuralNetTransform(data, logger)
+    # format data for use with pandas
     rfData = pd.DataFrame({'p1': rfData[:, 1],
                            'p2': rfData[:, 2],
                            'p3': rfData[:, 3],
@@ -47,7 +49,8 @@ def runRandomForest(data, logger):
     X = rfData[['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10',
                 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10']]
     y = rfData['result']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.25, random_state=0)
     # Figured I would mess around with PCA here, provides a marginal increase in accuracy
     pca = PCA(n_components=15)
     X_train = pca.fit_transform(X_train)
@@ -85,6 +88,9 @@ def runRandomForest(data, logger):
 
     logger.info("Creating confusion matrix plot, as well as printing results...")
     d0 = time.perf_counter()
+    confusion_matrix = pd.crosstab(y_test, y_pred, rownames=[
+                                   'Actual'], colnames=['Predicted'])
+    sn.heatmap(confusion_matrix, annot=True)
     print('Accuracy: ', metrics.accuracy_score(y_test, y_pred))
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
