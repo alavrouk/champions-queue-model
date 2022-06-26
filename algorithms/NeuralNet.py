@@ -27,7 +27,8 @@ def runNeuralNetwork(data, logger):
     Xtrain = neuralNetworkData[0:toSplit, 1:]
     Ytrain = neuralNetworkData[0:toSplit, 0].reshape((toSplit))
     Xtest = neuralNetworkData[toSplit:neuralNetworkData.shape[0], 1:]
-    Ytest = neuralNetworkData[toSplit:neuralNetworkData.shape[0], 0].reshape((neuralNetworkData.shape[0] - toSplit))
+    Ytest = neuralNetworkData[toSplit:neuralNetworkData.shape[0], 0].reshape(
+        (neuralNetworkData.shape[0] - toSplit))
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
@@ -69,5 +70,3 @@ def runNeuralNetwork(data, logger):
     print("test_acc:", test_acc)
 
     logger.info("All Neural Network operations complete")
-
-

@@ -26,7 +26,8 @@ def generateData(numClicks, logger):
     d0 = time.perf_counter()
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(executable_path='driver/chromedriver.exe', options=chrome_options)
+    driver = webdriver.Chrome(
+        executable_path='driver/chromedriver.exe', options=chrome_options)
     driver.get('{}?qty={}'.format("https://championsqueue.gg/matches", 1346))
     time.sleep(2)
     button = driver.find_element(by=By.CLASS_NAME, value="block")
@@ -94,7 +95,8 @@ def generateData(numClicks, logger):
 def getChampionWinrate(logger):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(executable_path='driver/chromedriver.exe', options=chrome_options)
+    driver = webdriver.Chrome(
+        executable_path='driver/chromedriver.exe', options=chrome_options)
     driver.get('{}?qty={}'.format("https://championsqueue.gg/champions", 1346))
     time.sleep(2)
     html = driver.page_source
@@ -109,7 +111,8 @@ def getChampionWinrate(logger):
     champions = champions.reshape((champions.size, 1))
     champions = np.char.upper(champions)
     np.savetxt("data/champion_winrate.csv", champions, delimiter=",", fmt="%s")
-    champions = np.genfromtxt('data/champion_winrate.csv', delimiter=',', dtype='U')
+    champions = np.genfromtxt(
+        'data/champion_winrate.csv', delimiter=',', dtype='U')
     champions = champions.reshape((champions.size, 1))
     regex = re.compile('[^a-zA-Z]')
     for i in range(champions.size):
@@ -138,7 +141,8 @@ def getPlayerWinrate(logger):
     """
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(executable_path='driver/chromedriver.exe', options=chrome_options)
+    driver = webdriver.Chrome(
+        executable_path='driver/chromedriver.exe', options=chrome_options)
     driver.get('{}?qty={}'.format("https://championsqueue.gg/players", 1346))
     time.sleep(2)
     html = driver.page_source
@@ -191,7 +195,8 @@ def getWinLoss(driver):
         soup = BeautifulSoup(html, 'lxml')
         outcomes = soup.find_all('h3', class_='outcome svelte-pgplua')
         winLosses.append(outcomes[0].getText())
-        el = driver.find_element(by=By.XPATH, value="//div[@class=\'backdrop svelte-pgplua\']")
+        el = driver.find_element(
+            by=By.XPATH, value="//div[@class=\'backdrop svelte-pgplua\']")
         action = ActionChains(driver)
         action.move_to_element_with_offset(el, 100, 100)
         action.click()

@@ -45,7 +45,7 @@ if __name__ == '__main__':
     The main function. The way we see this project being formatted is just to be able to plug and play into the 
     main function. So whichever model you want to try, just write it into the main function. The models are each their 
     own separate class.
-    
+
     """
     # Pass this guy into everything (or make global variable I have no idea how python works)
     logger = createLogger()
@@ -58,7 +58,8 @@ if __name__ == '__main__':
     logger.info("Starting data generation...")
     #dataGenerator.generateData(numClicks, logger)
     logger.info("Data generation complete!")
-    data = np.genfromtxt('data/champions_queue_data.csv', delimiter=',', dtype='U')
+    data = np.genfromtxt('data/champions_queue_data.csv',
+                         delimiter=',', dtype='U')
     RandomForest.runRandomForest(data, logger)
     #runSVM(data, logger)
     #runNeuralNetwork(data, logger)
