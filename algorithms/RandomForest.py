@@ -53,7 +53,6 @@ def runRandomForest(data, logger):
     X_train = pca.fit_transform(X_train)
     X_test = pca.transform(X_test)
     explained_variance = pca.explained_variance_ratio_
-    print(explained_variance)
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
@@ -86,10 +85,7 @@ def runRandomForest(data, logger):
 
     logger.info("Creating confusion matrix plot, as well as printing results...")
     d0 = time.perf_counter()
-    confusion_matrix = pd.crosstab(y_test, y_pred, rownames=['Actual'], colnames=['Predicted'])
-    sn.heatmap(confusion_matrix, annot=True)
     print('Accuracy: ', metrics.accuracy_score(y_test, y_pred))
-    plt.show()
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
