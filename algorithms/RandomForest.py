@@ -24,6 +24,7 @@ def runRandomForest(data, logger):
         "Creating dataframe and splitting data into training and validation set...")
     d0 = time.perf_counter()
     rfData = neuralNetTransform(data, logger)
+    # format data for use with pandas
     rfData = pd.DataFrame({'p1': rfData[:, 1],
                            'p2': rfData[:, 2],
                            'p3': rfData[:, 3],
