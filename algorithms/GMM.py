@@ -1,21 +1,16 @@
-# Gaussian mixture model using average player+champ winrates for each team.
-# See DataTransformations.py -> clusteringTransform() for more info.
-
-from pydoc import doc
 import time
 
 from pandas import DataFrame
 from sklearn.mixture import GaussianMixture
 from util.DataTransformations import clusteringTransform
 import matplotlib.pyplot as plt
-import numpy as np
 
 
 def runGMM(data, logger):
     """
+    Gaussian mixture model using average player+champ winrates for each team.
     :param data:
-    :param logger:
-    :return:
+    :param logger: see ChampionsQueueModel.py -> createLogger()
     """
     logger.info("Starting GMM operations...")
     d0 = time.perf_counter()
@@ -61,11 +56,13 @@ def runGMM(data, logger):
 
     logger.info("Plotting model results...")
     d0 = time.perf_counter()
-    plt.scatter(*zip(*correctPoints), color='green', label='Correct', alpha=0.5)
-    plt.scatter(*zip(*incorrectPoints), color='red', label='Incorrect', alpha=0.5)
+    plt.scatter(*zip(*correctPoints), color='green',
+                label='Correct', alpha=0.5)
+    plt.scatter(*zip(*incorrectPoints), color='red',
+                label='Incorrect', alpha=0.5)
     plt.show()
     logger.info(f"Done in {time.perf_counter() - d0:0.4f} seconds")
 
     logger.info(f"Gaussian Mixed Model accuracy: {accuracy:0.4f}")
-    
+
     logger.info("GMM Model Successfully Completed")

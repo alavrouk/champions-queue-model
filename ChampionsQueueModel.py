@@ -6,7 +6,6 @@ from algorithms.SVM import runSVM
 from algorithms.NeuralNet import runNeuralNetwork
 import dataGenerator
 import numpy as np
-import util.DataTransformations
 from util.CustomFormatter import CustomFormatter
 
 
@@ -62,11 +61,12 @@ if __name__ == '__main__':
     data = np.genfromtxt('data/champions_queue_data.csv',
                          delimiter=',', dtype='U')
 
+    # TODO: switch statement maybe?
     algorithm = input("Which algorithm would you like to run? \n"
                       "1 ---- SVM \n"
                       "2 ---- RandomForest \n"
-                      "3 ---- NeuralNet \n"
-                      "4 ---- KMeans \n"
+                      "3 ---- Neural Network \n"
+                      "4 ---- k-Means \n"
                       "5 ---- Gaussian Mixture Models \n")
     if algorithm == '1':
         runSVM(data, logger)
@@ -79,4 +79,4 @@ if __name__ == '__main__':
     elif algorithm == '5':
         runGMM(data, logger)
     else:
-        print('bruh')
+        logger.warning('read the menu stupid')
