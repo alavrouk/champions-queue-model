@@ -22,7 +22,9 @@ from numpy import genfromtxt
 
 def clusteringTransform(data):
     """
-    Output: [ Outcome, Avg_playerWR_t1 + Avg_champWR_t1, Avg_playerWR_t2 + Avg_champWR_t2]
+    Output: [X, Y, Z] = [ Outcome, Avg_playerWR_t1 + Avg_champWR_t1, Avg_playerWR_t2 + Avg_champWR_t2]
+            x ∈ {0, 1}: 0 is T1 defeat, 1 is T1 victory
+            y, z ∈ [0, 1]
     In theory this could lend itself to k nearest neighbors, this would follow the theory that the higher
     winrates in both categories lead to more wins.
 
@@ -52,7 +54,7 @@ def clusteringTransform(data):
             kNNData[i, j] = playerWinrates[index[0][0], 1]
             kNNData[i, j] = kNNData[i, j].replace('%', '')
 
-    # First column will be result, with defeat being 1 and victory 0
+    # First column will be result, with defeat being 0 and victory 1
     finalKNNData = data[:, 1]
     for i in range(finalKNNData.size):
         if finalKNNData[i] == "Defeat":
