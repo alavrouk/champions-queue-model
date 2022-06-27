@@ -79,6 +79,7 @@ def runKMeans(data, logger):
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
+    print("Accuracy: ", accuracy)
     logger.info("Plotting correctly and incorrectly predicted datapoints...")
     d0 = time.perf_counter()
     xw = incorrectLabels[:, 0]
