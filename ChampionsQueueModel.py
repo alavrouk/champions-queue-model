@@ -44,26 +44,39 @@ def createLogger():
 
 if __name__ == '__main__':
     """
-    The main function. The way we see this project being formatted is just to be able to plug and play into the 
+    The main function. The way we see this project being formatted is just to be able to plug and play into the n
     main function. So whichever model you want to try, just write it into the main function. The models are each their 
     own separate class.
 
     """
     # Pass this guy into everything (or make global variable I have no idea how python works)
     logger = createLogger()
-    numClicks = 60
-    # if len(sys.argv) > 1:
-    #     numClicks = np.int_(sys.argv[1])
 
-    # TODO: Need to add some sort of things with args or something to generate data or not, like an if statement
+    yesno = input("Would you like to regenerate your data? (y/n) \n")
+    if yesno == 'y':
+        numClicks = input("How many sets of 20 data points would you like? \n")
+        print("You have selected", numClicks, "sets of 20 data points")
+        logger.info("Starting data generation...")
+        dataGenerator.generateData(int(numClicks), logger)
+        logger.info("Data generation complete!")
+    data = np.genfromtxt('data/champions_queue_data.csv',
+                         delimiter=',', dtype='U')
 
-    logger.info("Starting data generation...")
-    #dataGenerator.generateData(numClicks, logger)
-    logger.info("Data generation complete!")
-    data = np.genfromtxt('data/champions_queue_data.csv', delimiter=',', dtype='U')
-    
-    #runGMM(data, logger)
-    runKMeans(data, logger)
-    #RandomForest.runRandomForest(data, logger)
-    #runSVM(data, logger)
-    #runNeuralNetwork(data, logger)
+    algorithm = input("Which algorithm would you like to run? \n"
+                      "1 ---- SVM \n"
+                      "2 ---- RandomForest \n"
+                      "3 ---- NeuralNet \n"
+                      "4 ---- KMeans \n"
+                      "5 ---- Gaussian Mixture Models \n")
+    if algorithm == '1':
+        runSVM(data, logger)
+    elif algorithm == '2':
+        runRandomForest(data, logger)
+    elif algorithm == '3':
+        runNeuralNetwork(data, logger)
+    elif algorithm == '4':
+        runKMeans(data, logger)
+    elif algorithm == '5':
+        runGMM(data, logger)
+    else:
+        print('bruh')
