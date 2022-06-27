@@ -1,12 +1,13 @@
 import logging
+from algorithms.GMM import runGMM
+from algorithms.KMeans import runKMeans
+from algorithms.RandomForest import runRandomForest
+from algorithms.SVM import runSVM
+from algorithms.NeuralNet import runNeuralNetwork
 import dataGenerator
 import numpy as np
 import util.DataTransformations
 from util.CustomFormatter import CustomFormatter
-from algorithms.SVM import runSVM
-from algorithms import RandomForest
-from algorithms.KMeans import runKMeans
-from algorithms.NeuralNet import runNeuralNetwork
 
 
 def createLogger():
@@ -60,6 +61,8 @@ if __name__ == '__main__':
     #dataGenerator.generateData(numClicks, logger)
     logger.info("Data generation complete!")
     data = np.genfromtxt('data/champions_queue_data.csv', delimiter=',', dtype='U')
+    
+    #runGMM(data, logger)
     runKMeans(data, logger)
     #RandomForest.runRandomForest(data, logger)
     #runSVM(data, logger)
