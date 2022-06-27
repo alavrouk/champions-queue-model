@@ -22,7 +22,7 @@ def runSVM(data, logger):
     logger.info("Splitting data into training and validation set...")
     d0 = time.perf_counter()
     # Using kNNData here transform here as they are the same
-    SVMData = clusteringTransform(data)
+    SVMData = clusteringTransform(data, logger)
     # First I want all of the data, so that I can end up plotting it
     x = np.asarray(SVMData[:, 1]).reshape((SVMData.shape[0], 1))
     y = np.asarray(SVMData[:, 2]).reshape((SVMData.shape[0], 1))

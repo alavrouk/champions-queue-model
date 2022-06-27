@@ -14,7 +14,7 @@ def runGMM(data, logger):
     """
     logger.info("Starting GMM operations...")
     d0 = time.perf_counter()
-    clusterData = clusteringTransform(data)
+    clusterData = clusteringTransform(data, logger)
     numRows = clusterData.shape[0]
     clusterData = {
         'outcome': clusterData[:, 0],

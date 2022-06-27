@@ -16,7 +16,7 @@ def runKMeans(data, logger):
     """
     logger.info("Starting KMeans operations...")
     d0 = time.perf_counter()
-    kmData = clusteringTransform(data)
+    kmData = clusteringTransform(data, logger)
     numRows = kmData.shape[0]
     kmData = {
         'outcome': kmData[:, 0],

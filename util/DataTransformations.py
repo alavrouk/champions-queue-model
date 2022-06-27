@@ -20,7 +20,7 @@ import numpy as np
 from numpy import genfromtxt
 
 
-def clusteringTransform(data):
+def clusteringTransform(data, logger):
     """
     Output: [X, Y, Z] = [ Outcome, Avg_playerWR_t1 + Avg_champWR_t1, Avg_playerWR_t2 + Avg_champWR_t2]
             x ∈ {0, 1}: 0 is T1 defeat, 1 is T1 victory
@@ -35,6 +35,9 @@ def clusteringTransform(data):
         Average instead of adding
         Make each one into a separate feature
     """
+    logger.info("Building Clustering Data set...")
+    d0 = time.perf_counter()
+
     # First I will get rid of the patch
     kNNData = np.delete(data, 0, 1)
     # Now I will replace the champions with the specified champion winrate
@@ -98,6 +101,9 @@ def clusteringTransform(data):
 
     # Finally convert to an array of doubles and return
     finalKNNData = finalKNNData.astype(np.double)
+
+    d1 = time.perf_counter()
+    logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
     return finalKNNData
 
