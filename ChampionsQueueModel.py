@@ -1,12 +1,12 @@
 import logging
+from algorithms.GMM import runGMM
+from algorithms.KMeans import runKMeans
+from algorithms.RandomForest import runRandomForest
+from algorithms.SVM import runSVM
+from algorithms.NeuralNet import runNeuralNetwork
 import dataGenerator
 import numpy as np
-import util.DataTransformations
 from util.CustomFormatter import CustomFormatter
-from algorithms.SVM import runSVM
-from algorithms.RandomForest import runRandomForest
-from algorithms.KMeans import runKMeans
-from algorithms.NeuralNet import runNeuralNetwork
 
 
 def createLogger():
@@ -58,12 +58,15 @@ if __name__ == '__main__':
         logger.info("Starting data generation...")
         dataGenerator.generateData(int(numClicks), logger)
         logger.info("Data generation complete!")
-    data = np.genfromtxt('data/champions_queue_data.csv', delimiter=',', dtype='U')
+    data = np.genfromtxt('data/champions_queue_data.csv',
+                         delimiter=',', dtype='U')
+
+    # TODO: switch statement maybe?
     algorithm = input("Which algorithm would you like to run? \n"
                       "1 ---- SVM \n"
                       "2 ---- RandomForest \n"
-                      "3 ---- NeuralNet \n"
-                      "4 ---- KMeans \n"
+                      "3 ---- Neural Network \n"
+                      "4 ---- k-Means \n"
                       "5 ---- Gaussian Mixture Models \n")
     if algorithm == '1':
         runSVM(data, logger)
@@ -74,4 +77,6 @@ if __name__ == '__main__':
     elif algorithm == '4':
         runKMeans(data, logger)
     elif algorithm == '5':
-        print("not yet implemented xd")
+        runGMM(data, logger)
+    else:
+        logger.warning('read the menu stupid')
