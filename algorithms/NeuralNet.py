@@ -1,6 +1,6 @@
 import time
 
-from keras import Sequential
+from keras import Sequential, regularizers
 from keras.layers import Dense, Dropout
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -41,13 +41,17 @@ def runNeuralNetwork(data, logger):
     logger.info("Building and compiling model")
     d0 = time.perf_counter()
     model = Sequential()
-    model.add(Dense(100, input_dim=20, activation='relu'))
-    model.add(Dense(200, activation='relu'))
-    model.add(Dense(50, activation='relu'))
-    model.add(Dense(20, activation='relu'))
+    model.add(Dense(50, input_dim=20, activation='leaky_relu', kernel_regularizer=regularizers.l2(0.005)))
+    model.add(Dropout(0.2))
+    model.add(Dense(100, activation='leaky_relu', kernel_regularizer=regularizers.l2(0.005)))
+    model.add(Dropout(0.1))
+    model.add(Dense(50, activation='tanh', kernel_regularizer=regularizers.l2(0.005)))
+    model.add(Dropout(0.1))
+    model.add(Dense(20, activation='sigmoid', kernel_regularizer=regularizers.l2(0.005)))
     model.add(Dense(1, activation='sigmoid'))
+
     Kevin = tf.keras.optimizers.Adam(
-        learning_rate=3e-3,
+        learning_rate=1e-3,
         # Exponential decay rate for first moment estimates
         beta_1=0.9,
         # Exponential decay rate for second moment estimates
@@ -56,7 +60,7 @@ def runNeuralNetwork(data, logger):
         epsilon=1e-07,
         # AMSGrad is an extension to the Adam version of gradient descent that attempts to improve the convergence
         # properties of the algorithm, avoiding large abrupt changes in the learning rate for each input variable.
-        amsgrad=True,
+        amsgrad=False,
         name='Adam',
     )
     model.compile(optimizer=Kevin,
@@ -69,7 +73,7 @@ def runNeuralNetwork(data, logger):
 
     logger.info("Fitting and Evaluating Performance")
     d0 = time.perf_counter()
-    history = model.fit(Xtrain, ytrain, epochs=225, batch_size=10, validation_data=(Xval, yval))
+    history = model.fit(Xtrain, ytrain, epochs=500, batch_size=5, validation_data=(Xval, yval))
     test_loss, test_acc = model.evaluate(Xtest, ytest)
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
