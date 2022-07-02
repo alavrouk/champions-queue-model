@@ -62,8 +62,9 @@ def runKMeans(data, logger):
                 label='Correct', alpha=0.5)
     plt.scatter(*zip(*incorrectPoints), color='red',
                 label='Incorrect', alpha=0.5)
-    plt.show()
     logger.info(f"Done in {time.perf_counter() - d0:0.4f} seconds")
+    
+    plt.show()
 
     logger.info(f"Accuracy: {accuracy:0.4f}")
 
