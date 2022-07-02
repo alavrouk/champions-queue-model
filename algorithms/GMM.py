@@ -1,9 +1,11 @@
 import time
+from matplotlib.colors import LogNorm
 
 from pandas import DataFrame
 from sklearn.mixture import GaussianMixture
 from util.DataTransformations import clusteringTransform
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def runGMM(data, logger):
@@ -56,14 +58,24 @@ def runGMM(data, logger):
 
     logger.info("Plotting model results...")
     d0 = time.perf_counter()
+    # creates mixture Gaussian log plot
+    x = np.linspace(30, 70)
+    y = np.linspace(30, 70)
+    X, Y = np.meshgrid(x, y)
+    XX = np.array([X.ravel(), Y.ravel()]).T
+    Z = -gmm.score_samples(XX)
+    Z = Z.reshape(X.shape)
+    # plot results
     plt.scatter(*zip(*correctPoints), color='green',
                 label='Correct', alpha=0.5)
     plt.scatter(*zip(*incorrectPoints), color='red',
                 label='Incorrect', alpha=0.5)
+    plt.contour(X, Y, Z, norm=LogNorm(
+        vmin=1, vmax=1000), levels=np.logspace(0, 2, 10))
     logger.info(f"Done in {time.perf_counter() - d0:0.4f} seconds")
-    
+
     plt.show()
-    
+
     logger.info(f"Gaussian Mixed Model accuracy: {accuracy:0.4f}")
 
     logger.info("GMM Model Successfully Completed")
