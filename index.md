@@ -52,20 +52,64 @@ Champion's Queue intends to offer top NA & LATAM players a competitive environme
 2. lowering game ping.
 
 ### Data Collection & Usage
-Champion's Queue is currently in **Summer Split 1** (as of today, 18 June 2022). Since League of Legends underwent a [significant rebalancing](https://www.leagueoflegends.com/en-us/news/game-updates/patch-12-10-notes/) right before the start of this split, our models are <ins>trained exclusively on matches from this split</ins>.
+Champion's Queue is currently in **Summer Split 1** (as of today, 18 June 2022). Since League of Legends underwent a [significant rebalancing](https://www.leagueoflegends.com/en-us/news/game-updates/patch-12-10-notes/) right before the start of this split, our models are <ins>trained exclusively on matches from this split</ins>. TODO: Add something about webscraping and where we scraped from
 
 ## **ALGORITHMS**
-
-### Random Forest
-
-### Neural Network
-
-### Support Vector Machine (SVM)
 
 ### Clustering
 
 - _K-Means_
 - _Gaussian Mixture Models_
-- _K-Nearest Neighbors_
 
-### Linear Regression
+### Support Vector Machine (SVM)
+
+### Neural Network
+
+Given the almost linear decision boundary shown by the SVM and the clustering algorithms, we figured that a neural network could use its inherent nonlinearity, combined with extra features, to learn some more interesting patterns beyond the simplistic decision boundary found previously. This model used 20 features as follows:
+
+<center>[ t1player1winrate, t1player2winrate, ..., t1champion1winrate, t1champion2winrate, ..., t2player1winrate, t2player2winrate, ..., t2champion1winrate, t2champion2winrate ]</center>
+
+Since a neural network is capable of learning complex patterns, these extra features have the potential to boost the accuracy of the more simple models, even though we do not have that many datapoints to work with.
+
+The following is the neural network architecture that we ultimately decided on:
+
+```
+model = Sequential()
+    model.add(Dense(50, input_dim=20, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+    model.add(Dropout(0.2))
+    model.add(Dense(100, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+    model.add(Dropout(0.2))
+    model.add(Dense(50, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+    model.add(Dropout(0.2))
+    model.add(Dense(20, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+    model.add(Dense(1, activation='sigmoid'))
+```
+
+with the following extra hyperparameters/specifications:
+
+```
+Kevin = tf.keras.optimizers.Adam(
+        learning_rate=1e-3,
+        # Exponential decay rate for first moment estimates
+        beta_1=0.9,
+        # Exponential decay rate for second moment estimates
+        beta_2=0.999,
+        # Should be really small, helps avoid divide by 0
+        epsilon=1e-07,
+        # AMSGrad is an extension to the Adam version of gradient descent that attempts to improve the convergence
+        # properties of the algorithm, avoiding large abrupt changes in the learning rate for each input variable.
+        amsgrad=False,
+        name='Adam',
+    )
+    model.compile(optimizer=Kevin,
+                  loss='binary_crossentropy',
+                  metrics=['accuracy'])
+    history = model.fit(Xtrain, ytrain, epochs=150, batch_size=7, validation_data=(Xval, yval))
+```
+
+This architecture is a classic example of a binary classifier, which is why it uses the sigmoid activation function in the last layer and the binary crossentropy loss function. The amount of neurons in the dense layers was not tuned to perfection, but we feel like we made a decent selection in terms of model size. Obviously, a larger model tends to overfit more, so we had to regularize some of the larger weights using l2 regularization and added some dropout, which overall helped reduce overfitting by a good bit. We played around with other activation functions, like leaky_relu and adding a few more sigmoids, but they did not create a large difference in performance so we stuck with the tried and true ReLU.
+
+### Random Forest
+
+
+
