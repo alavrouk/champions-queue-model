@@ -104,6 +104,12 @@ Kevin = tf.keras.optimizers.Adam(
 
 This architecture is a classic example of a binary classifier, which is why it uses the sigmoid activation function in the last layer and the binary crossentropy loss function. The amount of neurons in the dense layers was not tuned to perfection, but we feel like we made a decent selection in terms of model size. Obviously, a larger model tends to overfit more, so we had to regularize some of the larger weights using l2 regularization and added some dropout, which overall helped reduce overfitting by a good bit. We played around with other activation functions, like leaky_relu and adding a few more sigmoids, but they did not create a large difference in performance so we stuck with the tried and true ReLU.
 
+Below are some graphs regarding the performance of the model through the 150 epochs on both the training and validation sets. As you can see, the overfitting was kept to a minimum, as for the most parts, both plots line up. Also, the rate of descent on the loss graph seems to indicate a solid choice in learning rate.
+
+![ACCURACY](/images/trainingAndValidationAccuracy.png)
+
+![LOSS](/images/trainingAndValidationLoss.png)
+
 ### Random Forest
 
 
