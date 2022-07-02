@@ -90,14 +90,9 @@ with the following extra hyperparameters/specifications:
 ```
 Kevin = tf.keras.optimizers.Adam(
         learning_rate=1e-3,
-        # Exponential decay rate for first moment estimates
         beta_1=0.9,
-        # Exponential decay rate for second moment estimates
         beta_2=0.999,
-        # Should be really small, helps avoid divide by 0
         epsilon=1e-07,
-        # AMSGrad is an extension to the Adam version of gradient descent that attempts to improve the convergence
-        # properties of the algorithm, avoiding large abrupt changes in the learning rate for each input variable.
         amsgrad=False,
         name='Adam',
     )
