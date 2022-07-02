@@ -67,7 +67,7 @@ Champion's Queue is currently in **Summer Split 1** (as of today, 18 June 2022).
 
 Given the almost linear decision boundary shown by the SVM and the clustering algorithms, we figured that a neural network could use its inherent nonlinearity, combined with extra features, to learn some more interesting patterns beyond the simplistic decision boundary found previously. This model used 20 features as follows:
 
-<center>[ t1player1winrate, t1player2winrate, ..., t1champion1winrate, t1champion2winrate, ..., t2player1winrate, t2player2winrate, ..., t2champion1winrate, t2champion2winrate ]</center>
+![NEURAL NETWORK DATA FORMAT](/images/neuralNetDataFormat.png)
 
 Since a neural network is capable of learning complex patterns, these extra features have the potential to boost the accuracy of the more simple models, even though we do not have that many datapoints to work with.
 
