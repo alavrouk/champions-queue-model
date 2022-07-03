@@ -65,7 +65,7 @@ Champion's Queue is currently in **Summer Split 1** (as of today, 18 June 2022).
 
 ### Neural Network
 
-Given the almost linear decision boundary shown by the SVM and the clustering algorithms, we figured that a neural network could use its inherent nonlinearity, combined with extra features, to learn some more interesting patterns beyond the simplistic decision boundary found previously. This model used 20 features as follows:
+From our clustering and SVM experimentation, it turned out that the hardest matches for those classification methods to predict were the matches were both teams had a similar average winrate. In other words, the hardest ones to predict were those lying on the y=x line in the graphs above. Thus, we decided to try a neural network. Nonlinear in nature, it may be able to pick up on some subtleties from a larger amount of features. Thus, we decided to not average winrates for teams and instead used the features shown below:
 
 ![NEURAL NETWORK DATA FORMAT](/images/neuralNetDataFormat.png)
 
@@ -102,9 +102,17 @@ Kevin = tf.keras.optimizers.Adam(
     history = model.fit(Xtrain, ytrain, epochs=150, batch_size=7, validation_data=(Xval, yval))
 ```
 
-This architecture is a classic example of a binary classifier, which is why it uses the sigmoid activation function in the last layer and the binary crossentropy loss function. The amount of neurons in the dense layers was not tuned to perfection, but we feel like we made a decent selection in terms of model size. Obviously, a larger model tends to overfit more, so we had to regularize some of the larger weights using l2 regularization and added some dropout, which overall helped reduce overfitting by a good bit. We played around with other activation functions, like leaky_relu and adding a few more sigmoids, but they did not create a large difference in performance so we stuck with the tried and true ReLU.
+This architecture is a classic example of a binary classifier, which is why it uses the sigmoid activation function in the last layer and the binary crossentropy loss function. Another potential loss function to consider would be hinge loss. Hinge loss not only penalizes misclassified samples but also correctly classifies ones that are within a defined margin from the decision boundary. 
+
+IMAGE HERE
+
+Ultimately, however, we decided against hinge loss. We had a lot of points near the decision boundary, and hinge loss would penalize those points perhaps more than it should have. 
+
+The amount of neurons in the dense layers was not tuned to perfection, but we feel like we made a decent selection in terms of model size. A larger model tends to overfit more, so we had to regularize some of the larger weights using l2 regularization and added some dropout, which overall helped reduce overfitting by a good bit. We played around with other activation functions, like leaky_relu and adding a few more sigmoids, but they did not create a large difference in performance so we stuck with the tried and true ReLU.
 
 Below are some graphs regarding the performance of the model through the 150 epochs on both the training and validation sets. As you can see, the overfitting was kept to a minimum, as for the most parts, both plots line up. Also, the rate of descent on the loss graph seems to indicate a solid choice in learning rate.
+
+In terms of accuracy, neural network on average performed at around **80%**.
 
 ![ACCURACY](/images/trainingAndValidationAccuracy.png)
 
