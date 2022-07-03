@@ -119,7 +119,7 @@ In terms of accuracy, neural network on average performed at around **80%**.
 ![LOSS](/images/trainingAndValidationLoss.png)
 
 <details>
-<summary>### Random Forest</summary>
+###<summary>Random Forest</summary>
 <br>
 This is how you dropdown.
 </details>
