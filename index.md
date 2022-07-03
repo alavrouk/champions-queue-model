@@ -47,8 +47,10 @@ Using only pre-match data, this project uses machine learning to try and predict
 
 ### A Quick Summary - League of Legends Champion's Queue
 Champion's Queue intends to offer top NA & LATAM players a competitive environment closer to those found in KR and Chinese servers by
+
 1. limiting player pool to pro and select semi-pro players and
 2. lowering game latency (ping).
+
 For professional players, the advent of champion's queue is an exciting opportunity to hone their skills in an environment that mimics the real competetive envionment. For us, it is a great opportunity to finally be able to collect data from high level league of legends matches. Before, we were limited to simply actual competetve matches, which there are unforunately not that many of per year.
 
 ### Data Collection & Usage
