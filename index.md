@@ -104,7 +104,7 @@ Kevin = tf.keras.optimizers.Adam(
 
 This architecture is a classic example of a binary classifier, which is why it uses the sigmoid activation function in the last layer and the binary crossentropy loss function. Another potential loss function to consider would be hinge loss. Hinge loss not only penalizes misclassified samples but also correctly classifies ones that are within a defined margin from the decision boundary. 
 
-IMAGE HERE
+![HINGELOSS](/images/hingeloss.png)
 
 Ultimately, however, we decided against hinge loss. We had a lot of points near the decision boundary, and hinge loss would penalize those points perhaps more than it should have. 
 
