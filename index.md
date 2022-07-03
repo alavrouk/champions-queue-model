@@ -71,7 +71,7 @@ TODO: Add something about webscraping and where we scraped from
 
 From our clustering and SVM experimentation, it turned out that the hardest matches for those classification methods to predict were the matches were both teams had a similar average winrate. In other words, the hardest ones to predict were those lying on the y=x line in the graphs above. Thus, we decided to try a neural network. Nonlinear in nature, it may be able to pick up on some subtleties from a larger amount of features. Thus, we decided to not average winrates for teams and instead used the features shown below:
 
-![NEURAL NETWORK DATA FORMAT](/images/neuralNetDataFormat.png)
+![NEURAL NETWORK DATA FORMAT](/img/neuralNetDataFormat.png)
 
 Since a neural network is capable of learning complex patterns, these extra features have the potential to boost the accuracy of the more simple models, even though we do not have that many datapoints to work with.
 
@@ -108,7 +108,7 @@ Kevin = tf.keras.optimizers.Adam(
 
 This architecture is a classic example of a binary classifier, which is why it uses the sigmoid activation function in the last layer and the binary crossentropy loss function. Another potential loss function to consider would be hinge loss. Hinge loss not only penalizes misclassified samples but also correctly classifies ones that are within a defined margin from the decision boundary. 
 
-![HINGELOSS](/images/hingeloss.png)
+![HINGELOSS](/img/hingeloss.png)
 
 Ultimately, however, we decided against hinge loss. We had a lot of points near the decision boundary, and hinge loss would penalize those points perhaps more than it should have. 
 
@@ -118,8 +118,8 @@ Below are some graphs regarding the performance of the model through the 150 epo
 
 In terms of accuracy, neural network on average performed at around **80%**.
 
-![ACCURACY](/images/trainingAndValidationAccuracy.png)
+![ACCURACY](/img/trainingAndValidationAccuracy.png)
 
-![LOSS](/images/trainingAndValidationLoss.png)
+![LOSS](/img/trainingAndValidationLoss.png)
 
 ### Random Forest
