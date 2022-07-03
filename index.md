@@ -38,8 +38,8 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 # League of Legends - Predicting Match Outcomes with Machine Learning
 
-## _Anton Lavrouk (Georgia Tech '24)_
-## _Ethan Jiang (Vanderbilt University '24)_
+### _Anton Lavrouk (Georgia Tech '24)_
+### _Ethan Jiang (Vanderbilt University '24)_
 
 ## **OVERVIEW**
 Using only pre-match data, this project uses machine learning to try and predict the outcome of League of Legends Champion's Queue matches. 
@@ -73,7 +73,7 @@ Since a neural network is capable of learning complex patterns, these extra feat
 
 The following is the neural network architecture that we ultimately decided on:
 
-```
+```python
 model = Sequential()
     model.add(Dense(50, input_dim=20, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
     model.add(Dropout(0.2))
@@ -87,7 +87,7 @@ model = Sequential()
 
 with the following extra hyperparameters/specifications:
 
-```
+```python
 Kevin = tf.keras.optimizers.Adam(
         learning_rate=1e-3,
         beta_1=0.9,
