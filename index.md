@@ -56,23 +56,14 @@ Champion's Queue is currently in **Summer Split 1** (as of today, 18 June 2022).
 
 ## **ALGORITHMS**
 
-<details>
-<summary style="font-size:20px;"><b>Clustering Algorithms</b></summary>
+### Clustering
 
 - _K-Means_
 - _Gaussian Mixture Models_
-    
-</details>
 
-<details>
-<summary style="font-size:20px;"><b>SVM (Support Vector Machine) </b></summary>
+### Support Vector Machine (SVM)
 
-temp
-
-</details>
-
-<details>
-<summary style="font-size:20px;"><b>Neural Network</b></summary>
+### Neural Network
 
 From our clustering and SVM experimentation, it turned out that the hardest matches for those classification methods to predict were the matches were both teams had a similar average winrate. In other words, the hardest ones to predict were those lying on the y=x line in the graphs above. Thus, we decided to try a neural network. Nonlinear in nature, it may be able to pick up on some subtleties from a larger amount of features. Thus, we decided to not average winrates for teams and instead used the features shown below:
 
@@ -127,15 +118,4 @@ In terms of accuracy, neural network on average performed at around **80%**.
 
 ![LOSS](/images/trainingAndValidationLoss.png)
 
-</details>
-    
-<details>
-<summary style="font-size:20px;"><b>Random Forest</b></summary>
-
-This is how you dropdown.
-
-</details>
-
-
-
-
+### Random Forest
