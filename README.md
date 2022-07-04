@@ -1,6 +1,6 @@
 ## What is this?
 
-This is a summer project by Anton Lavrouk (Georgia Tech '24) and Ethan Jiang (Vanderbilt '24). We aim to predict matches from the prestigious **Champion's Queue** recently implemented in the popular online game League of Legends. For more information, please visit the project page [here](https://alavrouk.github.io/LoL-data/).
+This is a summer project by Anton Lavrouk (Georgia Tech '24) and Ethan Jiang (Vanderbilt '24). We aim to predict matches from the prestigious **Champion's Queue** recently implemented in the popular online game League of Legends. For more information, please visit the project page [here](https://alavrouk.github.io/champions-queue-model/).
 
 ## Running the models
 
