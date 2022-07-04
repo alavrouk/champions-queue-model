@@ -76,35 +76,33 @@ Selenium is used when a button needs to be pressed. This happens when I need to 
 
 ### Clustering
 
-To get a sense of what our data actually entailed, we decided to run clustering algorithms to both visualize the data and run rudimentary predictions. In order to visualize, we had to create data that was two dimensional. The following is the format of the data:
+To get a sense of what our data actually entailed, we decided to run clustering algorithms to both visualize the data and run rudimentary predictions. In order to do so, original data was re-expressed from 20 to 2 dimensions, as follows:
 
 ![CLUSTERINGDATA](/img/clusteringData.png)
 
-In essence, there are two features, one for each team. These features take the average of the average winrate of the players on the team and the average winrate of the champions they are playing. Thus, each feature has a range of 0-100. 
+In essence, there are two features, one for each team. Each feature equally weights the average winrate of the _players on the team_ and the average winrate of the _champions they are playing_. Thus, each feature has a range of 0-100. 
 
-With this data in hand, we proceeded to run two clustering algorithms, kMeans and Gaussian Mixture Models, each set to generate two clusters. In theory, both of those algorithms would then create two clusters separating a team one victory and a team one loss. The following is a code snippet from our kmeans modeling:
+With this data in hand, we proceeded to run two clustering algorithms: **k-means** and **Gaussian mixture models**. In theory, both of those algorithms would then create two clusters representing victory or defeat (from the perspective of Team 1). 
+
+Code snippets from both clustering models are shown below:
 
 ```python
 df = DataFrame(kmData, columns=['team1wr', 'team2wr'])
 kmeans = KMeans(n_clusters=2)
 predictions = kmeans.fit_predict(df)
-```
 
-The following is a code snippet from our Gaussian Mixture Model:
-
-```python
 df = DataFrame(clusterData, columns=['team1wr', 'team2wr'])
 gmm = GaussianMixture(n_components=2)
 predictions = gmm.fit_predict(df)
 ```
 
-In terms of performance both models hovered around **73% accuracy**. Once the predictions were complete. We decided it would be interesting to graph the points that each algorithm got correct and incorrect (first is GMM then Kmeans):
+Both models hovered around **73% accuracy** - the graphs below indicate which datapoints the models predicted correctly (green) and incorrectly (red).
 
 ![GMMGRAPH](/img/gmm.png)
 
 ![KMEANSGRAPH](/img/kmeans.png)
 
-As you can tell, the clustering algorithms have issues with the points on the decision boundary, which comes as no surprise given the nature of the algorithms. This issue with the decision boundary inspired our approaches for the following three algorithms.
+Unsurprisingly, both clustering algorithms struggled to classify points closer to the decision boundary. Since the majority of data is clustered around this troublesome area, we turn to other approaches more applicable to our problem.
 
 ---
 
@@ -129,19 +127,15 @@ After some hyperparameter tuning, we settled on the above values. In particular,
 
 ### Neural Network
 
-From our clustering and SVM experimentation, we observed that both models struggled to consistently predict matches between teams of similar average winrate, i.e. the hardest matches to predict were those lying on the $y=x$ line in the graphs above. As neural networks are nonlinear in nature, we were interested to see if such a model would pick up on more subtleties from a larger amount of features.
+From our clustering and SVM experimentation, we observed that both models struggled to consistently predict matches between teams of similar average winrate, i.e. the hardest matches to predict were those lying on the y=x line in the graphs above. As neural networks are nonlinear in nature, we were interested to see if such a model would pick up on more subtleties from a larger amount of features.
 
 Instead of simplifying player and champion winrates into a single representative value for each team (as done in the above models), we left the features separate as shown below:
 
 ![NEURAL NETWORK DATA FORMAT](/img/neuralNetDataFormat.png)
 
-$$
-[team1.player1.winrate, \ldots, team1.player5.winrate, team1.champion1.winrate, \ldots, team1.champion5.winrate, team2.player1.winrate, ...]
-$$
+Since a neural network is capable of learning complex patterns, these extra features have the potential to boost accuracy beyond what was achieved in the simpler models above.
 
-Since a neural network is capable of learning complex patterns, these extra features have the potential to boost the accuracy of the more simple models, even though we do not have that many datapoints to work with.
-
-The following is the neural network architecture that we ultimately decided on:
+The following is the neural network architecture we ultimately decided on
 
 ```python
 model = Sequential()
@@ -176,29 +170,35 @@ This architecture is a classic example of a binary classifier, which is why it u
 
 ![HINGELOSS](/img/hingeloss.png)
 
-Ultimately, however, we decided against hinge loss. We had a lot of points near the decision boundary, and hinge loss would penalize those points perhaps more than it should have. 
+Ultimately, we decided against hinge loss. We had a lot of points near the decision boundary, and hinge loss could have overly penalized those points. 
 
-The amount of neurons in the dense layers was not tuned to perfection, but we feel like we made a decent selection in terms of model size. A larger model tends to overfit more, so we had to regularize some of the larger weights using l2 regularization and added some dropout, which overall helped reduce overfitting by a good bit. We played around with other activation functions, like leaky_relu and adding a few more sigmoids, but they did not create a large difference in performance so we stuck with the tried and true ReLU.
+The amount of neurons in the dense layers was not tuned to perfection, but we feel like we made a decent selection in terms of model size. A larger model tends to overfit more, so we had to regularize some of the larger weights using l2 regularization and add dropout, which overall helped reduce overfitting by a good bit. We played around with other activation functions, like `leaky_relu` and adding a few more sigmoids, but they did not create a large difference in performance so we stuck with the tried and true ReLU.
 
-Below are some graphs regarding the performance of the model through the 150 epochs on both the training and validation sets. As you can see, the overfitting was kept to a minimum, as for the most parts, both plots line up. Also, the rate of descent on the loss graph seems to indicate a solid choice in learning rate.
-
-In terms of accuracy, neural network on average performed at around **80%**.
+Below are some graphs regarding the performance of the model through 150 epochs on both the training and validation sets. Overfitting was kept to a minimum and both plots line up for the most part. Also, the rate of descent on the loss graph seems to indicate a solid choice in learning rate.
 
 ![ACCURACY](/img/trainingAndValidationAccuracy.png)
 
 ![LOSS](/img/trainingAndValidationLoss.png)
 
+In terms of accuracy, the neural network on average performed at around **80%**.
+
+---
+
 ### Random Forest
 
-It is generally common that Random Forest and Neural Network can achieve a similar accuracy on a relatively small dataset (ours was around 1000 data points). However, this did not turn out to be the case, as random forest achieved around a **70% accuracy**. Below, you can see the first few layers of one of the decision trees that was part of the forest.
+It is common for random forest and neural network models to achieve a similar accuracy on a relatively small dataset (such as ours, at ~1000 data points). However, this did not turn out to be the case, as random forest achieved around a **70% accuracy**. 
+
+Below, you can see the first few layers of one of the decision trees that was part of the forest. Note that splitting values are altered from the original 0-100 scale due to PCA.
 
 ![DECISIONTREE](/img/decisionTree.png)
 
-So why was our accuracy so low? An interesting fact about our data (formatted the same as the neural network), is that it would make sense for each feature to have the same importance in terms of the overall variance. Each winrate would play into the result of the game almost equally, since League of Legends is balanced around the fact that each role should in theory have the same impact on the result of the game, especially in an environment like champions queue, where the players are relatively evenly skilled. Combined with the fact that this is a binary classification problem, this makes the ensemble of decision trees have a difficult time accurately classifying. Below you can see the confusion matrix from our random forest.
+Why the lower accuracy? Given the nature of our training data (formatting is the same as for neural network - see above section), it would make sense for each feature to have the same importance in terms of overall variance. Each winrate would play into the result of the game almost equally, since League of Legends is balanced around the fact that each role should (in theory) have the same impact on the result of the game, especially in a high-skill environment like Champion's Queue. 
+
+This fact, combined with the binary nature of our classification, causes the random forest approach to be less effective for this particular instance. Taking a look at the model's confusion matrix below, we can see that the model is only predicting losses correctly 60% of the time (Actual, 0) and wins 70% of the time (Actual, 1).
 
 ![CONFUSIONMATRIX](/img/confusionMatrix.png)
 
-In order to try to get rid of some features, we decided to perform PCA (principal component analysis) on our data, which left us with 15 features (arbitrary, but retained about 80% of variance) as opposed to 20, to see if the forest would react positively to a bit less features. This however, did not necessarily help that much, so was ommited from the final model. The code for that is below:
+To see if the model would improve from a reduced number of training features, we decided to perform principal component analysis on our data. This left us with 15 features (arbitrary, but retained about 80% of total variance) as opposed to 20.
 
 ```python
 pca = PCA(n_components=8)
@@ -206,7 +206,9 @@ X_train = pca.fit_transform(X_train)
 X_test = pca.transform(X_test)
 ```
 
-Tuning hyperparameters resulted in around 100 decision trees, and with this information, the following is the code for the random forest classifier:
+Unfortunately, this alteration did not significantly improve accuracy and was ultimately omitted.
+
+Tuning hyperparameters resulted in around 100 decision trees, resulting in the final classifier shown below:
 
 ```python
  rf = RandomForestClassifier(n_estimators=100)
