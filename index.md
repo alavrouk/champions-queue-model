@@ -56,7 +56,15 @@ For professional players, the advent of champion's queue is an exciting opportun
 ### Data Collection & Usage
 Champion's Queue is currently in **Summer Split 1** (as of today, 18 June 2022). Since League of Legends underwent a [significant rebalancing](https://www.leagueoflegends.com/en-us/news/game-updates/patch-12-10-notes/) right before the start of this split, our models are <ins>trained exclusively on matches from this split</ins>. 
 
-TODO: Add something about webscraping and where we scraped from
+In terms of data collected, the following items were scraped from [championsqueue.gg](championsqueue.gg):
+
+- Each player's winrate
+- Each champion's winrate
+- All matches from champion's queue summer split one. This includes:
+    - The champions picked for the match
+    - The players playing the match
+
+
 
 ## **ALGORITHMS**
 
