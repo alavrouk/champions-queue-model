@@ -129,7 +129,7 @@ main:
 
 ### Support Vector Machine (SVM)
 
-Support vector machines fit this problem very well as it is binary classification problem. Thus, the resulting hyperplane that SVM generates would be the decision boundary between a win or a loss for team one. We decided to take this opportunity to use the same data as the clustering algorithms so that we would be able to actually visualize the hyperplane. Perhaps if we used more features, we would have a higher accuracy, but obviously visualizing a 19 dimensional hyperplane is not something that science is currently capable of. However, this method yielded a respectable **72% axccuracy** anyways. Below is the code of the implementation of this SVM:
+Support vector machines fit this problem very well as it is binary classification problem. Thus, the resulting hyperplane that SVM generates would be the decision boundary between a win or a loss for team one. We decided to take this opportunity to use the same data as the clustering algorithms so that we would be able to actually visualize the hyperplane. Perhaps if we used more features, we would have a higher accuracy, but obviously visualizing a 19 dimensional hyperplane is not something that science is currently capable of. However, this method yielded a respectable **72% accuracy** anyways. Below is the code of the implementation of this SVM:
 
 ```python
 clf = svm.SVC(kernel='rbf', gamma=0.7, C=0.5)
