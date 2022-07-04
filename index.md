@@ -41,21 +41,21 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 ### _Ethan Jiang (Vanderbilt University '24)_
 
 ## **OVERVIEW**
-Before reading, a basic familiarity with the popular online game **League of Legends** is assumed. Skimming the following [link](https://mobalytics.gg/blog/absolute-beginners-guide-to-league-of-legends/) should get you up to speed. 
+Before reading, we recommend you have a basic understanding of the popular online game League of Legends on which this project is based. Skimming [this article](https://mobalytics.gg/blog/absolute-beginners-guide-to-league-of-legends/) should get you up to speed. 
 
-Using only pre-match data, this project uses machine learning to try and predict the outcome of League of Legends Champion's Queue matches. Predicting match outcome tends to be a lot easier when you are using actual match data, such as game length or takedowns per team. In fact, there is a cool implementation of this in _Counter Strike: Global Offensive_, which tries to predict your teams win percentage chance as the round happens. We wanted to challenge ourselves by trying to predict a matches outcome before it even occurs, simply from the people playing it and the champions they choose.
+At the most basic level, League of Legends pits players 5 versus 5 in a race to destroy the other team's objectives first. Each player selects a unique champion before the match begins - however, certain champions are always stronger than others given the game's current state of balancing. As a result, we theorize that both **the skill level of the player** (expressed through the player's overall winrate) and **the current viability of their champion** (expressed through the champion's overall winrate) will help make a meaningful prediction on a match's outcome.
+
+This project uses machine learning to try and predict the outcome of League of Legends Champion's Queue matches. Predicting match outcome tends to be a lot easier when using retrospective or real-time data (e.g. game length or takedowns per team); in fact, a similar feature is implemented directly in _Counter Strike: Global Offensive_, which tries to predict your teams win percentage chance as the round happens. We wanted to challenge ourselves by trying to predict a matches outcome before it even occurs, simply from the people playing it and the champions they choose.
 
 ### A Quick Summary - League of Legends Champion's Queue
-At the most basic level, League of Legends pits players 5 versus 5 in a race to destroy the other team's objectives first. Each player selects a unique champion before the match begins - however, certain champions are always stronger than others given the game's current state of balancing. 
-
-As a result, **both the skill level of the player and the current viability of their champion** can have a large effect on the
+For the most competitive League of Legends players, including those in the rapidly-growing professional scene 
 
 Champion's Queue intends to offer top NA & LATAM players a competitive environment closer to those found in KR and Chinese servers by
 
 1. limiting player pool to pro and select semi-pro players and
 2. lowering game latency (ping).
 
-For professional players, the advent of champion's queue is an exciting opportunity to hone their skills in an environment that mimics the real competetive envionment. For us, it is a great opportunity to finally be able to collect data from high level league of legends matches. Before, we were limited to simply actual competetve matches, which there are unforunately not that many of per year.
+For professional players, the advent of Champion's Queue is an exciting opportunity to hone their skills in an environment that mimics the real competetive envionment. For us, it is a great opportunity to finally be able to collect data from high level league of legends matches. Before, we were limited to simply actual competetve matches, which there are unforunately not that many of per year.
 
 ### Data Collection & Usage
 Champion's Queue is currently in **Summer Split 1** (as of today, 18 June 2022). Since League of Legends underwent a [significant rebalancing](https://www.leagueoflegends.com/en-us/news/game-updates/patch-12-10-notes/) right before the start of this split, our models are <ins>trained exclusively on matches from this split</ins>. 
@@ -72,10 +72,19 @@ In terms of data collected, the following items were scraped from [championsqueu
 
 ## **ALGORITHMS**
 
+<details>
+<summary>Clustering</summary>
+
 ### Clustering
 
 - _K-Means_
 - _Gaussian Mixture Models_
+
+```python
+main:
+    print('Hola')
+```
+</details>
 
 ### Support Vector Machine (SVM)
 
