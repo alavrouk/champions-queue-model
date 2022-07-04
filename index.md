@@ -104,24 +104,38 @@ In terms of performance both models hovered around **73% accuracy**. Once the pr
 
 As you can tell, the clustering algorithms have issues with the points on the decision boundary, which comes as no surprise given the nature of the algorithms. This issue with the decision boundary inspired our approaches for the following three algorithms.
 
+---
+
 ### Support Vector Machine (SVM)
 
-Binary classification problems such as win/loss prediction are well-suited for use with SVMs, as the model's resulting hyperplane naturally acts as the decision boundary between a win or a loss. We decided to use the same data as the clustering algorithms so that we would be able to actually visualize the hyperplane. Perhaps if we used more features, we would have a higher accuracy, but obviously visualizing a 19 dimensional hyperplane is not something that science is currently capable of. However, this method yielded a respectable **72% accuracy** anyways. Below is the code of the implementation of this SVM:
+Binary classification problems such as win/loss prediction are well-suited for use with SVMs, as the model's resulting hyperplane naturally acts as the decision boundary between a win or a loss. For this model, we decided to use the same two-dimensional data as the clustering models so that the hyperplane could be represented graphically. 
+
+Training on more features might have marginally increased accuracy, but would have come at the cost of simplistic visualization. However, this method yielded a respectable **72% accuracy** regardless. 
+
+Below is a rundown of our SVM implementation:
 
 ```python
 clf = svm.SVC(kernel='rbf', gamma=0.7, C=0.5)
 clf.fit(Xtrain, ctrain)
 cpred = clf.predict(Xtest)
 ```
-The hyperparameters were tuned quite a bit, and eventually the above are the ones that we settled on. In particular, the radial basis function kernel is important to the visualization of the actual hyperplane, which is shown below:
+After some hyperparameter tuning, we settled on the above values. In particular, the radial basis function kernel is important to the visualization of the actual hyperplane, which is shown below:
 
 ![SVM](/img/SVM.png)
 
+---
+
 ### Neural Network
 
-From our clustering and SVM experimentation, it turned out that the hardest matches for those classification methods to predict were the matches were both teams had a similar average winrate. In other words, the hardest ones to predict were those lying on the y=x line in the graphs above. Thus, we decided to try a neural network. Nonlinear in nature, it may be able to pick up on some subtleties from a larger amount of features. Thus, we decided to not average winrates for teams and instead used the features shown below:
+From our clustering and SVM experimentation, we observed that both models struggled to consistently predict matches between teams of similar average winrate, i.e. the hardest matches to predict were those lying on the $y=x$ line in the graphs above. As neural networks are nonlinear in nature, we were interested to see if such a model would pick up on more subtleties from a larger amount of features.
+
+Instead of simplifying player and champion winrates into a single representative value for each team (as done in the above models), we left the features separate as shown below:
 
 ![NEURAL NETWORK DATA FORMAT](/img/neuralNetDataFormat.png)
+
+$$
+[team1.player1.winrate, \ldots, team1.player5.winrate, team1.champion1.winrate, \ldots, team1.champion5.winrate, team2.player1.winrate, ...]
+$$
 
 Since a neural network is capable of learning complex patterns, these extra features have the potential to boost the accuracy of the more simple models, even though we do not have that many datapoints to work with.
 
