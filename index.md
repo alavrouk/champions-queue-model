@@ -48,7 +48,9 @@ At the most basic level, League of Legends pits players 5 versus 5 in a race to 
 This project uses machine learning to try and predict the outcome of League of Legends Champion's Queue matches. Predicting match outcome tends to be a lot easier when using retrospective or real-time data (e.g. game length or takedowns per team); in fact, a similar feature is implemented directly in _Counter Strike: Global Offensive_, which tries to predict your teams win percentage chance as the round happens. We wanted to challenge ourselves by trying to predict a matches outcome before it even occurs, simply from the people playing it and the champions they choose.
 
 ### A Quick Summary - League of Legends Champion's Queue
-For the most competitive League of Legends players, including those in the rapidly-growing professional scene 
+For the most competitive League of Legends players, the outcome of a match can be decided by just one or two split-second decisions. Individual reaction time is thus crucial to performance, but connection latency is perhaps just as important, especially for those in the game's [rapidly-growing professional scene](https://www.cnbc.com/2019/04/14/league-of-legends-gets-more-viewers-than-super-bowlwhats-coming-next.html).
+
+Pro players often find it helpful 
 
 Champion's Queue intends to offer top NA & LATAM players a competitive environment closer to those found in KR and Chinese servers by
 
@@ -113,19 +115,10 @@ Selenium is used when a button needs to be pressed. This happens when I need to 
 
 ## **ALGORITHMS**
 
-<details>
-<summary>Clustering</summary>
-
 ### Clustering
 
 - _K-Means_
 - _Gaussian Mixture Models_
-
-```python
-main:
-    print('Hola')
-```
-</details>
 
 ### Support Vector Machine (SVM)
 
