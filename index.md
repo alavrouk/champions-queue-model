@@ -129,6 +129,17 @@ main:
 
 ### Support Vector Machine (SVM)
 
+Support vector machines fit this problem very well as it is binary classification problem. Thus, the resulting hyperplane that SVM generates would be the decision boundary between a win or a loss for team one. We decided to take this opportunity to use the same data as the clustering algorithms so that we would be able to actually visualize the hyperplane. Perhaps if we used more features, we would have a higher accuracy, but obviously visualizing a 19 dimensional hyperplane is not something that science is currently capable of. However, this method yielded a respectable **72% axccuracy** anyways. Below is the code of the implementation of this SVM:
+
+```python
+clf = svm.SVC(kernel='rbf', gamma=0.7, C=0.5)
+clf.fit(Xtrain, ctrain)
+cpred = clf.predict(Xtest)
+```
+The hyperparameters were tuned quite a bit, and eventually the above are the ones that we settled on. In particular, the radial basis function kernel is important to the visualization of the actual hyperplane, which is shown below:
+
+![SVM](/img/SVM.png)
+
 ### Neural Network
 
 From our clustering and SVM experimentation, it turned out that the hardest matches for those classification methods to predict were the matches were both teams had a similar average winrate. In other words, the hardest ones to predict were those lying on the y=x line in the graphs above. Thus, we decided to try a neural network. Nonlinear in nature, it may be able to pick up on some subtleties from a larger amount of features. Thus, we decided to not average winrates for teams and instead used the features shown below:
