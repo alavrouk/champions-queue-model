@@ -1,3 +1,5 @@
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
 # League of Legends - Predicting Match Outcomes with Machine Learning
 ### _Anton Lavrouk (Georgia Tech '24)_
 ### _Ethan Jiang (Vanderbilt University '24)_
