@@ -1,3 +1,4 @@
 theme: jekyll-theme-minimal
 description: A League of Legends Champions Queue Match predictor
 logo: /img/logo.png
+show_downloads: true
