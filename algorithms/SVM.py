@@ -42,7 +42,7 @@ def runSVM(data, logger):
 
     logger.info("Fitting SVM...")
     d0 = time.perf_counter()
-    clf = svm.SVC(kernel='rbf', gamma=0.7, C=0.5)
+    clf = svm.SVC(kernel='rbf', gamma=0.7, C=0.25)
     clf.fit(Xtrain, ctrain)
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")

@@ -41,13 +41,13 @@ def runNeuralNetwork(data, logger):
     logger.info("Building and compiling model")
     d0 = time.perf_counter()
     model = Sequential()
-    model.add(Dense(50, input_dim=20, activation='leaky_relu', kernel_regularizer=regularizers.l2(0.005)))
+    model.add(Dense(50, input_dim=20, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
     model.add(Dropout(0.2))
-    model.add(Dense(100, activation='leaky_relu', kernel_regularizer=regularizers.l2(0.005)))
-    model.add(Dropout(0.1))
-    model.add(Dense(50, activation='tanh', kernel_regularizer=regularizers.l2(0.005)))
-    model.add(Dropout(0.1))
-    model.add(Dense(20, activation='sigmoid', kernel_regularizer=regularizers.l2(0.005)))
+    model.add(Dense(100, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+    model.add(Dropout(0.2))
+    model.add(Dense(50, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+    model.add(Dropout(0.2))
+    model.add(Dense(20, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
     model.add(Dense(1, activation='sigmoid'))
 
     Kevin = tf.keras.optimizers.Adam(
@@ -73,7 +73,7 @@ def runNeuralNetwork(data, logger):
 
     logger.info("Fitting and Evaluating Performance")
     d0 = time.perf_counter()
-    history = model.fit(Xtrain, ytrain, epochs=500, batch_size=5, validation_data=(Xval, yval))
+    history = model.fit(Xtrain, ytrain, epochs=150, batch_size=7, validation_data=(Xval, yval))
     test_loss, test_acc = model.evaluate(Xtest, ytest)
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")

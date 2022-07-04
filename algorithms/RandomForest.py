@@ -1,6 +1,7 @@
 import time
 
 import pandas as pd
+import sklearn
 from sklearn.decomposition import PCA
 from sklearn.feature_selection import SelectFromModel
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
@@ -51,37 +52,21 @@ def runRandomForest(data, logger):
     y = rfData['result']
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.25, random_state=0)
+    print(X_train)
     # Figured I would mess around with PCA here, provides a marginal increase in accuracy
-    pca = PCA(n_components=15)
+    pca = PCA(n_components=8)
     X_train = pca.fit_transform(X_train)
     X_test = pca.transform(X_test)
     explained_variance = pca.explained_variance_ratio_
+    print(explained_variance)
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
 
     # The commented out stuff here is automated hyperparameter tuning
     logger.info("Fitting and creating random forest classifier...")
     d0 = time.perf_counter()
-    # n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
-    # max_features = ['auto', 'sqrt']
-    # max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
-    # max_depth.append(None)
-    # min_samples_split = [2, 5, 10]
-    # min_samples_leaf = [1, 2, 4]
-    # bootstrap = [True, False]  # Create the random grid
-    # random_grid = {'n_estimators': n_estimators,
-    #                'max_features': max_features,
-    #                'max_depth': max_depth,
-    #                'min_samples_split': min_samples_split,
-    #                'min_samples_leaf': min_samples_leaf,
-    #                'bootstrap': bootstrap}
-    rf = RandomForestClassifier(n_estimators=600, min_samples_split=10, min_samples_leaf=1,
-                                max_features='sqrt', max_depth=40, bootstrap=False)
-    # rf_random = RandomizedSearchCV(estimator=rf, param_distributions=random_grid, n_iter=100, cv=3, verbose=2,
-    #                                random_state=42, n_jobs=-1)
+    rf = RandomForestClassifier(n_estimators=100)
     rf.fit(X_train, y_train)
-    # rf_random.fit(X_train, y_train)
-    # print(rf_random.best_params_)
     y_pred = rf.predict(X_test)
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
@@ -91,6 +76,8 @@ def runRandomForest(data, logger):
     confusion_matrix = pd.crosstab(y_test, y_pred, rownames=[
                                    'Actual'], colnames=['Predicted'])
     sn.heatmap(confusion_matrix, annot=True)
+    # sklearn.tree.plot_tree(rf.estimators_[0], max_depth=2, feature_names=rfData.keys())
+    plt.show()
     print('Accuracy: ', metrics.accuracy_score(y_test, y_pred))
     d1 = time.perf_counter()
     logger.info(f"Done in {d1 - d0:0.4f} seconds")
