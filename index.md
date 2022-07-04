@@ -79,31 +79,31 @@ The following is the neural network architecture that we ultimately decided on:
 
 ```python
 model = Sequential()
-    model.add(Dense(50, input_dim=20, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
-    model.add(Dropout(0.2))
-    model.add(Dense(100, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
-    model.add(Dropout(0.2))
-    model.add(Dense(50, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
-    model.add(Dropout(0.2))
-    model.add(Dense(20, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
-    model.add(Dense(1, activation='sigmoid'))
+model.add(Dense(50, input_dim=20, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+model.add(Dropout(0.2))
+model.add(Dense(100, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+model.add(Dropout(0.2))
+model.add(Dense(50, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+model.add(Dropout(0.2))
+model.add(Dense(20, activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+model.add(Dense(1, activation='sigmoid'))
 ```
 
 with the following extra hyperparameters/specifications:
 
 ```python
-Kevin = tf.keras.optimizers.Adam(
-        learning_rate=1e-3,
-        beta_1=0.9,
-        beta_2=0.999,
-        epsilon=1e-07,
-        amsgrad=False,
-        name='Adam',
-    )
-    model.compile(optimizer=Kevin,
-                  loss='binary_crossentropy',
-                  metrics=['accuracy'])
-    history = model.fit(Xtrain, ytrain, epochs=150, batch_size=7, validation_data=(Xval, yval))
+opt = tf.keras.optimizers.Adam(
+    learning_rate=1e-3,
+    beta_1=0.9,
+    beta_2=0.999,
+    epsilon=1e-07,
+    amsgrad=False,
+    name='Adam',
+)
+model.compile(optimizer=opt,
+              loss='binary_crossentropy',
+              metrics=['accuracy'])
+history = model.fit(Xtrain, ytrain, epochs=150, batch_size=7, validation_data=(Xval, yval))
 ```
 
 This architecture is a classic example of a binary classifier, which is why it uses the sigmoid activation function in the last layer and the binary crossentropy loss function. Another potential loss function to consider would be hinge loss. Hinge loss not only penalizes misclassified samples but also correctly classifies ones that are within a defined margin from the decision boundary. 
@@ -123,3 +123,27 @@ In terms of accuracy, neural network on average performed at around **80%**.
 ![LOSS](/img/trainingAndValidationLoss.png)
 
 ### Random Forest
+
+It is generally common that Random Forest and Neural Network can achieve a similar accuracy on a relatively small dataset (ours was around 1000 data points). However, this did not turn out to be the case, as random forest achieved around a **70% accuracy**. Below, you can see the first few layers of one of the decision trees that was part of the forest.
+
+![DECISIONTREE](/img/decisionTree.png)
+
+So why was our accuracy so low? An interesting fact about our data (formatted the same as the neural network), is that it would make sense for each feature to have the same importance in terms of the overall variance. Each winrate would play into the result of the game almost equally, since League of Legends is balanced around the fact that each role should in theory have the same impact on the result of the game, especially in an environment like champions queue, where the players are relatively evenly skilled. Combined with the fact that this is a binary classification problem, this makes the ensemble of decision trees have a difficult time accurately classifying. Below you can see the confusion matrix from our random forest.
+
+![CONFUSIONMATRIX](/img/confusionMatrix.png)
+
+In order to try to get rid of some features, we decided to perform PCA (principal component analysis) on our data, which left us with 15 features (arbitrary, but retained about 80% of variance) as opposed to 20, to see if the forest would react positively to a bit less features. This however, did not necessarily help that much, so was ommited from the final model. The code for that is below:
+
+```python
+pca = PCA(n_components=8)
+X_train = pca.fit_transform(X_train)
+X_test = pca.transform(X_test)
+```
+
+Tuning hyperparameters resulted in around 100 decision trees, and with this information, the following is the code for the random forest classifier:
+
+```python
+ rf = RandomForestClassifier(n_estimators=100)
+ rf.fit(X_train, y_train)
+ y_pred = rf.predict(X_test)
+```
