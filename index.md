@@ -47,6 +47,10 @@ Using only pre-match data, this project uses machine learning to try and predict
 etc. etc.
 
 ### A Quick Summary - League of Legends Champion's Queue
+At the most basic level, League of Legends pits players 5 versus 5 in a race to destroy the other team's objectives first. Each player selects a unique champion before the match begins - however, certain champions are always stronger than others given the game's current state of balancing. 
+
+As a result, **both the skill level of the player and the current viability of their champion** can have a large effect on the
+
 Champion's Queue intends to offer top NA & LATAM players a competitive environment closer to those found in KR and Chinese servers by
 1. limiting player pool to pro and select semi-pro players and
 2. lowering game ping.
