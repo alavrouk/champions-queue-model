@@ -10,4 +10,12 @@ After cloning the repo, run the code using:
 python3 ChampionsQueueModel.py
 ```
 
-This will provide you with a CLI that gives you the option of re-scraping data from ![championsqueue.gg](championsqueue.gg), as well as your choice of algorithm from the ones imported. 
+This will provide you with a CLI that gives you the option of re-scraping data from ![championsqueue.gg](championsqueue.gg), as well as your choice of algorithm from the ones implemented. 
+
+# TLDR
+
+We implemented a few common machine learning models/algorithms in order to try to predict matches just based on which players are playing the match and what champions (heroes/characters/whatever you are familiar with) they picked. We ended up with about an 80% accuracy from the best performing model, the neural network. Pretty cool stuff!
+
+# Questions? Comments? Concerns?
+
+Want to use the webscraper? Have questions about the models? Want to know what my favorite breed of horse is? Feel free to ask!
