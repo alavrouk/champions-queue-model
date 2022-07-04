@@ -68,7 +68,48 @@ In terms of data collected, the following items were scraped from [championsqueu
     - The champions picked for the match
     - The players playing the match
 
+The scraper itself is written using the _beautifulsoup_ and _selenium_ python libraries, and it resides in the **dataGenerator.py** file.
 
+First, the page contents is retrieved into an xml object provided by beautifulsoup, as such:
+
+```python
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+driver = webdriver.Chrome(executable_path='driver/chromedriver.exe', options=chrome_options)
+driver.get('{}?qty={}'.format("https://championsqueue.gg/players", 1346))
+time.sleep(2)
+html = driver.page_source
+page_content = BeautifulSoup(html, 'lxml')
+```
+
+With this page content, you can extract whatever data you see fit. For example, below is the code for acquiring player winrates:
+
+```python
+players = []
+for player in page_content.find_all('p', class_='name svelte-1jnscn1'):
+    players.append(player)
+players = np.asarray(players)
+# Get rid of player team tag (to avoid issues if player changes teams)
+for i in range(len(players)):
+    spliced = players[i][0].split(' ')
+    if len(spliced) > 1:
+        del spliced[0]
+        s = " "
+        s = s.join(spliced)
+        players[i][0] = s
+players = players.reshape((players.size, 1))
+
+winrates = []
+for winrate in page_content.find_all('span', 'stat winrate svelte-1jnscn1'):
+    winrates.append(winrate)
+winrates = np.asarray(winrates)
+winrates = winrates.reshape((winrates.size, 1))
+
+driver.quit()
+data = np.concatenate((players, winrates), 1)
+```
+
+Selenium is used when a button needs to be pressed. This happens when I need to pull match data. Unfortunately, getting win loss from this particular website is a bit of a pain. You need to click on the match element each time to get the win loss, and the driver needs to wait a few seconds in between each click to make sure everything loads. As such, the dataGenerator unfortuantely takes quite a bit of time to actually get all of the matches.
 
 ## **ALGORITHMS**
 
