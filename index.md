@@ -19,7 +19,7 @@ Pro players often find it helpful to practice in ultra-low latency environments 
 For professional players, the advent of Champion's Queue is an exciting opportunity to hone their skills in an environment that mimics the real competitive environment. For us, it is a great opportunity to finally be able to collect significant data on high level League of Legends matches. Before, such data was limited to actual competition matches, which are too sparse to generate meaningful datasets.
 
 ### Data Collection & Usage
-Champion's Queue is currently in **Summer Split 1** (as of today, 18 June 2022). Since League of Legends underwent a [significant rebalancing](https://www.leagueoflegends.com/en-us/news/game-updates/patch-12-10-notes/) right before the start of this split, our models are <ins>trained exclusively on matches from this split</ins>. 
+Champion's Queue was in **Summer Split 1** when data was collected during mid-June 2022. Since League of Legends underwent a [significant rebalancing](https://www.leagueoflegends.com/en-us/news/game-updates/patch-12-10-notes/) right before the start of this split, our models are <ins>trained exclusively on matches from this split</ins>. 
 
 In terms of data collected, the following items were scraped from [championsqueue.gg](championsqueue.gg):
 
