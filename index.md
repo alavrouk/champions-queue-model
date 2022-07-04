@@ -70,8 +70,7 @@ driver.quit()
 data = np.concatenate((players, winrates), 1)
 ```
 
-Selenium is used when a button needs to be pressed. This happens when I need to pull match data. Unfortunately, getting win loss from this particular website is a bit of a pain. You need to click on the match element each time to get the win loss, and the driver needs to wait a few seconds in between each click to make sure everything loads. As such, the dataGenerator unfortuantely takes quite a bit of time to actually get all of the matches.
-
+Selenium is used when a button needs to be pressed. This happens when I need to pull match data. On the topic of buttons: unfortunately, getting win loss from this particular website is a bit of a pain. Each match requires a mouse click to view the result of the match. And after each mouse click, the code must wait a second or two before doing any other actions, just to let everything load in. Therefore, if you are getting results for 1000 matches, these waiting times quickly add up.
 ## **ALGORITHMS**
 
 ### Clustering
