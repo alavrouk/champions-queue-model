@@ -119,7 +119,7 @@ Selenium is used when a button needs to be pressed. This happens when I need to 
 
 To get a sense of what our data actually entailed, we decided to run clustering algorithms to both visualize the data and run rudimentary predictions. In order to visualize, we had to create data that was two dimensional. The following is the format of the data:
 
-![CLUSTERINGDATA](clusteringData.png)
+![CLUSTERINGDATA](/img/clusteringData.png)
 
 In essence, there are two features, one for each team. These features take the average of the average winrate of the players on the team and the average winrate of the champions they are playing. Thus, each feature has a range of 0-100. 
 
