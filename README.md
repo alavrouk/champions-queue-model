@@ -20,6 +20,6 @@ We implemented a few common machine learning models/algorithms in order to try t
 
 Want to use the webscraper? Have questions about the models? Want to know what my favorite breed of horse is? Feel free to ask! Reach us at:
 
-**alavrouk[AT]gmail[DOT]com**
+**alavrouk([AT])gmail([DOT])com**
 
- **ethan.t.jiang[AT]vanderbilt[DOT]edu**
+ **ethan.t.jiang([AT])vanderbilt([DOT])edu**
